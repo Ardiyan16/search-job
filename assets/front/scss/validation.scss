@@ -1,0 +1,19 @@
+@import "compass";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+
+/* Color settings */
+$formBg: #2c3e50;
+$formColor: #fff;
+$inputBg: #fff;
+$inputColor: #000;
+$buttonBg: #e67e22;
+$buttonColor: #fff;
+$errorMsgColor: #ff0000;
+
+
+form {
+  .error {
+    color: $errorMsgColor;
+  }
+}
+
