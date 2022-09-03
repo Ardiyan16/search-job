@@ -58,17 +58,12 @@
                     <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                         <div class="ml-auto">
                             <a href="<?= base_url('Pages') ?>" class="btn btn-info border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-user"></span>Menu Pelamar</a>
-                            <?php if ($this->session->userdata('nama_depan')) { ?>
-                                <a href="<?= base_url('Auth/logout_user') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-sign-out"></span>Log Out</a>
-                            <?php } else { ?>
-                                <a href="<?= base_url('Auth/login_company') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-sign-in"></span>Login & Register</a>
-                            <?php } ?>
+                            <a href="<?= base_url('Company') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-home"></span>Home Company</a>
+                            <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="icon-menu h3 m-0 p-0 mt-2"></span></a>
                         </div>
-                        <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="icon-menu h3 m-0 p-0 mt-2"></span></a>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
         </header>
 
 

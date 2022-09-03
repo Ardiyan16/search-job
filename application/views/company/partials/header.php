@@ -15,10 +15,14 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/owl.carousel.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/animate.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/quill.snow.css">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/front/select2-4.0.6-rc.1/dist/css/select2.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- MAIN CSS -->
+
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/style.css">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/front/summernote/summernote-bs4.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="<?= base_url() ?>assets/front/js/sweetalert2-all.js"></script>
 </head>
 
@@ -52,15 +56,17 @@
 
                     <nav class="mx-auto site-navigation">
                         <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                            <li><a href="index.html" class="nav-link">Home</a></li>
+                            <li><a href="<?= base_url('Company') ?>" class="nav-link">Home</a></li>
                             <li><a href="about.html">About</a></li>
-                            <li class="has-children">
-                                <a href="job-listings.html">Job Listings</a>
-                                <ul class="dropdown">
-                                    <li><a href="job-single.html">Job Single</a></li>
-                                    <li><a href="post-job.html">Post a Job</a></li>
-                                </ul>
-                            </li>
+                            <?php if ($this->session->userdata('nama_perusahaan')) { ?>
+                                <li class="has-children">
+                                    <a href="job-listings.html">Job</a>
+                                    <ul class="dropdown">
+                                        <li><a href="<?= base_url('Company/post_job') ?>">Posting Lowongan</a></li>
+                                        <li><a href="<?= base_url('Company/list_job') ?>">Daftar Lowongan Perusahaan</a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
                             <li class="has-children">
                                 <a href="services.html">Pages</a>
                                 <ul class="dropdown">
@@ -90,7 +96,11 @@
 
                     <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                         <div class="ml-auto">
-                            <a href="<?= base_url('Pages') ?>" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-user"></span>Menu Pelamar</a>
+                            <?php if ($this->session->userdata('nama_perusahaan')) { ?>
+                                <a href="<?= base_url('Company/profile') ?>" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-user"></span><?= substr($this->session->userdata('nama_perusahaan'), 0, 30) ?>...</a>
+                            <?php } else { ?>
+                                <a href="<?= base_url('Pages') ?>" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-user"></span>Menu Pelamar</a>
+                            <?php } ?>
                             <?php if ($this->session->userdata('nama_perusahaan')) { ?>
                                 <a href="<?= base_url('Auth/logout_company') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-sign-out"></span>Log Out</a>
                             <?php } else { ?>

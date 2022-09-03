@@ -51,4 +51,5 @@
 
 <!-- All init script -->
 <script src="<?= base_url() ?>assets/back/js/plugins-init/toastr-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 </body>

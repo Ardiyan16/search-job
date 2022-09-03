@@ -116,10 +116,19 @@
                     <li class="nav-label first">Main Menu</li>
                     <!-- <li><a href="index.html"><i class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                     </li> -->
-                    <li><a href="<?= base_url('Superadmin') ?>" aria-expanded="false"><i class="fa fa-dashboard"></i><span class="nav-text">Dashboard</span></a></li>
-
-                    <li class="nav-label">Main Menu</li>
-                    <li><a href="<?= base_url('Superadmin') ?>" aria-expanded="false"><i class="fa fa-dashboard"></i><span class="nav-text">Dashboard</span></a></li>
+                    <li><a href="<?= base_url('Admin') ?>" aria-expanded="false"><i class="fa fa-dashboard"></i><span class="nav-text">Dashboard</span></a></li>
+                    <li><a href="<?= base_url('Admin/users') ?>" aria-expanded="false"><i class="fa fa-user"></i><span class="nav-text">Users</span></a></li>
+                    <li><a href="<?= base_url('Admin/company') ?>" aria-expanded="false"><i class="fa fa-briefcase"></i><span class="nav-text">Company</span></a></li>
+                    <li class="nav-label">Menu Company & applicantion</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-bars"></i><span class="nav-text">Menu Tambahan</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="<?= base_url('Admin/bidang_perusahaan') ?>">Bidang Perusahaan</a></li>
+                            <li><a href="<?= base_url('Admin/bidang_pekerjaan') ?>">Bidang Pekerjaan</a></li>
+                            <li><a href="<?= base_url('Admin/tingkat_pekerjaan') ?>">Tingkat Pekerjaan</a></li>
+                            <li><a href="<?= base_url('Admin/jenis_pekerjaan') ?>">Jenis Pekerjaan</a></li>
+                            <li><a href="<?= base_url('Admin/ukuran_perusahaan') ?>">Ukuran Perusahaan</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

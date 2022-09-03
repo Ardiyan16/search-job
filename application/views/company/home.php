@@ -1,14 +1,14 @@
 <?php $this->load->view('company/partials/header') ?>
 
 <!-- HOME -->
-<section class="home-section section-hero overlay bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+<section class="home-section section-hero overlay bg-image" style="background-image: url(<?= base_url('assets/image/background-home.png') ?>);" id="home-section">
 
     <div class="container">
         <div class="row align-items-center justify-content-center">
             <div class="col-md-12">
                 <div class="mb-5 text-center">
-                    <h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur perferendis.</p>
+                    <h1 class="text-white font-weight-bold">Kami Berkomitmen</h1>
+                    <p>Membantu anda dalam menemukan talenta terbaik di bidangnya</p>
                 </div>
             </div>
         </div>

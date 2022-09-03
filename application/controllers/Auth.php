@@ -440,7 +440,7 @@ class Auth extends CI_Controller
     {
         $this->form_validation->set_rules('email', 'Email', 'required|trim|is_unique[company.email]|valid_email', ['is_unique' => 'email already registered (email telah terdaftar)', 'valid_email' => 'invalid email (email tidak valid)', 'required' => 'email is required (email harus di isi)']);
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim', ['required' => 'nama penanggung jawab is required (nama penanggung jawab harus di isi)']);
-        $this->form_validation->set_rules('no_telp', 'No Telepon', 'required|trim|max_length[13]|numeric', ['required' => 'no telepon jawab is required (no telepon harus di isi)', 'max_length' => 'no telepon minimum 13 number (nomor telepon minimal 13 angka)', 'numeric' => 'input only numbers (inputan hanya bisa angka)']);
+        $this->form_validation->set_rules('no_telp', 'No Telepon', 'required|trim|max_length[13]|numeric', ['required' => 'no telepon is required (no telepon harus di isi)', 'max_length' => 'no telepon minimum 13 number (nomor telepon minimal 13 angka)', 'numeric' => 'input only numbers (inputan hanya bisa angka)']);
         $this->form_validation->set_rules('nama_perusahaan', 'Nama Perusahaan', 'required|trim', ['required' => 'nama perusahaan is required (nama perusahaan harus di isi)']);
         $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]', ['required' => 'password is required (password harus di isi)', 'min_length' => 'password minimum 6 characters (kata sandi minimal 6 karakter)']);
         if ($this->form_validation->run() == false) {

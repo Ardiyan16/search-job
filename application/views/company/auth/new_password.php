@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="<?= base_url() ?>assets/front/js/sweetalert2-all.js"></script>
 </head>
 
@@ -64,11 +65,7 @@
                     <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                         <div class="ml-auto">
                             <a href="<?= base_url('Pages') ?>" class="btn btn-info border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-user"></span>Menu Pelamar</a>
-                            <?php if ($this->session->userdata('nama_depan')) { ?>
-                                <a href="<?= base_url('Auth/logout_user') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-sign-out"></span>Log Out</a>
-                            <?php } else { ?>
-                                <a href="<?= base_url('Auth/login_company') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-sign-in"></span>Login & Register</a>
-                            <?php } ?>
+                            <a href="<?= base_url('Company') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-home"></span>Home Company</a>
                         </div>
                         <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="icon-menu h3 m-0 p-0 mt-2"></span></a>
                     </div>
@@ -82,7 +79,7 @@
                 <div class="row">
                     <div class="col-lg-6" style="margin-top: 10%;">
                         <h2 class="mb-4">Password Baru Perusahaan</h2>
-                        <form name="ubah_password" action="" method="POST" class="p-4 border rounded">
+                        <form name="ubah_password" action="<?= base_url('Auth/ubah_password_company') ?>" method="POST" class="p-4 border rounded">
                             <!-- <?= base_url('Auth/ubah_password_company') ?> -->
                             <div class="row form-group mb-4">
                                 <div class="col-md-12 mb-3 mb-md-0">
