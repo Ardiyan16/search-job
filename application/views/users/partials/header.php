@@ -15,10 +15,14 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/owl.carousel.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/animate.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/quill.snow.css">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/front/select2-4.0.6-rc.1/dist/css/select2.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- MAIN CSS -->
+
     <link rel="stylesheet" href="<?= base_url() ?>assets/front/css/style.css">
+    <link rel="stylesheet" href="<?= base_url() ?>assets/front/summernote/summernote-bs4.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="<?= base_url() ?>assets/front/js/sweetalert2-all.js"></script>
 </head>
 
@@ -52,25 +56,14 @@
 
                     <nav class="mx-auto site-navigation">
                         <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                            <li><a href="index.html" class="nav-link">Home</a></li>
-                            <li><a href="about.html">About</a></li>
+                            <li><a href="<?= base_url('Pages') ?>" class="nav-link">Home</a></li>
+                            <li><a href="<?= base_url('Pages/lowongan') ?>">Lowongan</a></li>
+                            <li><a href="about.html">Perusahaan</a></li>
                             <li class="has-children">
-                                <a href="job-listings.html">Job Listings</a>
+                                <a href="services.html">Konten</a>
                                 <ul class="dropdown">
-                                    <li><a href="job-single.html">Job Single</a></li>
-                                    <li><a href="post-job.html">Post a Job</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-children">
-                                <a href="services.html">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="services.html">Services</a></li>
-                                    <li><a href="service-single.html">Service Single</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="portfolio-single.html">Portfolio Single</a></li>
-                                    <li><a href="testimonials.html">Testimonials</a></li>
-                                    <li><a href="faq.html">Frequently Ask Questions</a></li>
+                                    <li><a href="services.html">Komunitas</a></li>
+                                    <li><a href="service-single.html">Tutorial</a></li>
                                     <li><a href="gallery.html">Gallery</a></li>
                                 </ul>
                             </li>
@@ -78,10 +71,11 @@
                             <li><a href="contact.html">Contact</a></li>
                             <?php if ($this->session->userdata('nama_depan')) { ?>
                                 <li class="has-children">
-                                    <a href="services.html"><?= $this->session->userdata('nama_depan') ?></a>
+                                    <a href="#"><?= $this->session->userdata('nama_depan') ?></a>
                                     <ul class="dropdown">
-                                        <li><a href="services.html">Profile</a></li>
-                                        <li><a href="service-single.html">Lamaran Anda</a></li>
+                                        <li><a href="<?= base_url('Pages/profile') ?>">Profile</a></li>
+                                        <li><a href="">Lamaran Anda</a></li>
+                                        <li><a href="<?= base_url('Pages/bookmark_lamaran') ?>">Lamaran Disimpan</a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -90,7 +84,9 @@
 
                     <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                         <div class="ml-auto">
-                            <a href="<?= base_url('Company') ?>" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-briefcase"></span>Menu Perusahaan</a>
+                            <?php if (empty($this->session->userdata('nama_depan'))) { ?>
+                                <a href="<?= base_url('Company') ?>" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-briefcase"></span>Menu Perusahaan</a>
+                            <?php } ?>
                             <?php if ($this->session->userdata('nama_depan')) { ?>
                                 <a href="<?= base_url('Auth/logout_user') ?>" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 fa fa-sign-out"></span>Log Out</a>
                             <?php } else { ?>

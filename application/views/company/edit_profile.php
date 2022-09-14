@@ -25,7 +25,7 @@
                     <?php if ($edit->logo == NULL) { ?>
                         <a href="<?= base_url('assets/image/company.png') ?>" data-fancybox="gallery"><img src="<?= base_url('assets/image/company.png') ?>" alt="Image" class="img-fluid"></a>
                     <?php } else { ?>
-                        <a href="<?= base_url('assets/image/company_logo/' . $edit->logo) ?>" data-fancybox="gallery"><img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" alt="Image" class="img-fluid"></a>
+                        <a href="<?= base_url('assets/image/company_logo/' . $edit->logo) ?>" data-fancybox="gallery"><img src="<?= base_url('assets/image/company_logo/' . $edit->logo) ?>" alt="Image" class="img-fluid"></a>
                     <?php } ?>
                 </figure>
             </div>
@@ -79,6 +79,18 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="job-type">Bidang Perusahaan</label>
+                            <select class="selectpicker border rounded" id="job-type" name="bid_company" data-style="btn-black" data-width="100%" data-live-search="true" title="Pilih Ukuran Perusahaan">
+                                <?php foreach ($bidang as $view) { ?>
+                                    <option <?php if ($edit->bid_company == $view->id) {
+                                                echo "selected=\"selected\"";
+                                            } ?> value="<?= $view->id ?>"><?= $view->bidang_perusahaan ?></option>
+                                <?php } ?>
+                            </select>
+                            <?= form_error('bid_company', '<small class="text-danger pl-3">', '</small>'); ?>
+                        </div>
+
+                        <div class="form-group">
                             <label for="job-title">Situs / Website Perusahaan</label>
                             <input type="text" class="form-control" id="job-title" name="situs" value="<?= $edit->situs ?>" placeholder="">
                             <?= form_error('situs', '<small class="text-danger pl-3">', '</small>'); ?>
@@ -94,7 +106,7 @@
                             <label for="job-title">Logo</label>
                             <input type="hidden" name="old_images" value="<?= $edit->logo ?>">
                             <input type="file" name="logo" class="form-control" accept="image/*" id="img_upload">
-                            <?= form_error('logo', '<small class="text-danger pl-3">', '</small>'); ?>
+                            <!-- <?= form_error('logo', '<small class="text-danger pl-3">', '</small>'); ?> -->
                             <br>
                             <img id="logo" src="#" alt="your image" title="logo yang akan diupload" height="150" width="150" />
                         </div>

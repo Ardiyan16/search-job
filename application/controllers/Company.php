@@ -25,6 +25,7 @@ class Company extends CI_Controller
         $var['tingkat_pekerjaan'] = $this->admin->get_tingkat_pekerjaan();
         $var['jenis_pekerjaan'] = $this->admin->get_jenis_pekerjaan();
         $var['provinsi'] = $this->db->get('provinces')->result_array();
+        $var['spesialis'] = $this->db->get('bidang_spesialis')->result_array();
         $this->load->view('company/job/post_job', $var);
     }
 
@@ -39,12 +40,13 @@ class Company extends CI_Controller
             redirect('Company/post_job');
         } else {
             $this->form_validation->set_rules('job_title', 'Judul Lowongan', 'required|trim', ['required' => 'judul lowongan is required (judul lowongan harus di isi)']);
+            $this->form_validation->set_rules('bid_spesialis', 'Bidang Spesialis', 'required|trim', ['required' => 'spesialis is required (spesialis harus di isi)']);
             $this->form_validation->set_rules('bid_kerja', 'Bidang Kerja', 'required|trim', ['required' => 'bidang kerja is required (bidang kerja harus di isi)']);
             $this->form_validation->set_rules('tingkat_pekerjaan', 'tigkat pekerjaan', 'required|trim', ['required' => 'tigkat pekerjaan is required (tigkat pekerjaan harus di isi)']);
             $this->form_validation->set_rules('provinsi', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
             $this->form_validation->set_rules('kota', 'kota', 'required|trim', ['required' => 'kabupaten / kota is required (kabupaten / kota harus di isi)']);
             $this->form_validation->set_rules('pengalaman', 'pengalaman', 'required|trim', ['required' => 'pengalaman is required (pengalaman harus di isi)']);
-            $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim', ['required' => 'deskripsi pekerjaan is required (deskripsi pekerjaan harus di isi)']);
+            $this->form_validation->set_rules('deskripsi_job', 'Deskripsi', 'required|trim', ['required' => 'deskripsi pekerjaan is required (deskripsi pekerjaan harus di isi)']);
             $this->form_validation->set_rules('jenis_pekerjaan', 'jenis pekerjaan', 'required|trim', ['required' => 'jenis_pekerjaan is required (jenis_pekerjaan harus di isi)']);
             if ($this->form_validation->run() == false) {
                 $this->post_job();
@@ -60,6 +62,7 @@ class Company extends CI_Controller
     {
         $var['title'] = 'Company | List Job';
         $var['lowongan'] = $this->model->get_lowongan();
+        $var['jml_loker'] = $this->model->jml_lowongan();
         $this->load->view('company/job/list_job', $var);
     }
 
@@ -82,6 +85,67 @@ class Company extends CI_Controller
         }
     }
 
+    public function bidang_kerja()
+    {
+        switch ($_GET['jenis']) {
+                //ambil data kota / kabupaten
+            case 'bid_kerja':
+                $id_specialis = $_POST['id_spesialis'];
+                if ($id_specialis == '') {
+                    exit;
+                } else {
+                    $get_bidang_kerja = $this->db->query("SELECT * FROM bidang_pekerjaan WHERE id_spesialis ='$id_specialis' ORDER BY bidang_pekerjaan ASC")->result_array();
+                    foreach ($get_bidang_kerja as $get) {
+                        echo '<option value="' . $get['id'] . '">' . $get['bidang_pekerjaan'] . '</option>';
+                    }
+                    exit;
+                }
+                break;
+        }
+    }
+
+    public function detail_lowongan($id)
+    {
+        $var['title'] = 'Company | Detail Lowongan';
+        $var['job'] = $this->model->detail_lowongan($id);
+        $this->load->view('company/job/detail_post', $var);
+    }
+
+    public function edit_post_job($id)
+    {
+        $var['title'] = 'Company | Edit Post Job';
+        $var['edit'] = $this->model->detail_lowongan($id);
+        $var['bidang_pekerjaan'] = $this->admin->get_bidang_pekerjaan();
+        $var['tingkat_pekerjaan'] = $this->admin->get_tingkat_pekerjaan();
+        $var['jenis_pekerjaan'] = $this->admin->get_jenis_pekerjaan();
+        $var['provinsi'] = $this->db->get('provinces')->result_array();
+        $var['kota'] = $this->db->get('regencies')->result_array();
+        $var['spesialis'] = $this->db->get('bidang_spesialis')->result_array();
+        $var['bid_kerja'] = $this->db->get('bidang_pekerjaan')->result_array();
+        $this->load->view('company/job/edit_post', $var);
+    }
+
+    public function update_post_job()
+    {
+        $id = $this->input->post('id');
+        $this->form_validation->set_rules('job_title', 'Judul Lowongan', 'required|trim', ['required' => 'judul lowongan is required (judul lowongan harus di isi)']);
+        $this->form_validation->set_rules('bid_spesialis', 'Bidang Spesialis', 'required|trim', ['required' => 'spesialis is required (spesialis harus di isi)']);
+        $this->form_validation->set_rules('bid_kerja', 'Bidang Kerja', 'required|trim', ['required' => 'bidang kerja is required (bidang kerja harus di isi)']);
+        $this->form_validation->set_rules('tingkat_pekerjaan', 'tigkat pekerjaan', 'required|trim', ['required' => 'tigkat pekerjaan is required (tigkat pekerjaan harus di isi)']);
+        $this->form_validation->set_rules('provinsi', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
+        $this->form_validation->set_rules('kota', 'kota', 'required|trim', ['required' => 'kabupaten / kota is required (kabupaten / kota harus di isi)']);
+        $this->form_validation->set_rules('pengalaman', 'pengalaman', 'required|trim', ['required' => 'pengalaman is required (pengalaman harus di isi)']);
+        $this->form_validation->set_rules('deskripsi_job', 'Deskripsi', 'required|trim', ['required' => 'deskripsi pekerjaan is required (deskripsi pekerjaan harus di isi)']);
+        $this->form_validation->set_rules('jenis_pekerjaan', 'jenis pekerjaan', 'required|trim', ['required' => 'jenis_pekerjaan is required (jenis_pekerjaan harus di isi)']);
+        if ($this->form_validation->run() == false) {
+            $this->edit_post_job($id);
+        } else {
+            $this->model->update_post_job();
+            $this->session->set_flashdata('success_post_job', true);
+            redirect('Company/detail_lowongan/' . $id);
+        }
+    }
+
     public function profile()
     {
         $var['title'] = 'Company | Profile';
@@ -100,6 +164,7 @@ class Company extends CI_Controller
         $var['title'] = 'Company | Edit Profile';
         $var['edit'] = $this->model->get_company2();
         $var['ukuran'] = $this->db->get('ukuran_perusahaan')->result();
+        $var['bidang'] = $this->db->get('bidang_perusahaan')->result();
         $this->load->view('company/edit_profile', $var);
     }
 
@@ -111,11 +176,9 @@ class Company extends CI_Controller
         $this->form_validation->set_rules('alamat', 'Alamat', 'required|trim', ['required' => 'alamat is required (alamat harus di isi)']);
         $this->form_validation->set_rules('kota', 'kota', 'required|trim', ['required' => 'kabupaten / kota is required (kabupaten / kota harus di isi)']);
         $this->form_validation->set_rules('jumlah_karyawan', 'Jumlah Karyawan', 'required|trim', ['required' => 'ukuran perusahaan is required (ukuran perusahaan harus di isi)']);
+        $this->form_validation->set_rules('bid_company', 'Bidang Perusahaan', 'required|trim', ['required' => 'bidang perusahaan is required (bidang perusahaan harus di isi)']);
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required|trim', ['required' => 'deskripsi perusahaan is required (deskripsi perusahaan harus di isi)']);
         $this->form_validation->set_rules('situs', 'Situs', 'required|trim', ['required' => 'website / situs is required (website / situs harus di isi)']);
-        if (empty($_FILES['logo']['name'])) {
-            $this->form_validation->set_rules('logo', 'Document', 'required', ['required' => 'logo is required (logo harus di isi)']);
-        }
         if ($this->form_validation->run() == false) {
             $this->edit_profile();
         } else {

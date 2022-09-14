@@ -123,6 +123,7 @@
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-bars"></i><span class="nav-text">Menu Tambahan</span></a>
                         <ul aria-expanded="false">
                             <li><a href="<?= base_url('Admin/bidang_perusahaan') ?>">Bidang Perusahaan</a></li>
+                            <li><a href="<?= base_url('Admin/bidang_spesialis') ?>">Bidang Spesialis</a></li>
                             <li><a href="<?= base_url('Admin/bidang_pekerjaan') ?>">Bidang Pekerjaan</a></li>
                             <li><a href="<?= base_url('Admin/tingkat_pekerjaan') ?>">Tingkat Pekerjaan</a></li>
                             <li><a href="<?= base_url('Admin/jenis_pekerjaan') ?>">Jenis Pekerjaan</a></li>

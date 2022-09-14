@@ -65,10 +65,59 @@ class Admin extends CI_Controller
         redirect('Admin/bidang_perusahaan');
     }
 
+    public function bidang_spesialis()
+    {
+        $var['title'] = 'Bidang Spesialis';
+        $var['bidang_spesialis'] = $this->model->get_bidang_spesialis();
+        $var['edit'] = $this->model->get_bidang_spesialis();
+        $this->load->view('admin/page2/bidang_spesialis', $var);
+    }
+
+    public function save_specialist()
+    {
+        $input = $this->input->post('spesialis');
+        if (!empty($input)) {
+            $data = [
+                'spesialis' => $input,
+            ];
+            $this->db->insert('bidang_spesialis', $data);
+            $this->session->set_flashdata('success_create', true);
+            redirect('Admin/bidang_spesialis');
+        } else {
+            $this->session->set_flashdata('failed_create', true);
+            redirect('Admin/bidang_spesialis');
+        }
+    }
+
+    public function update_specialist()
+    {
+        $input = $this->input->post('spesialis');
+        if (!empty($input)) {
+            $bid_per = $this->input->post('spesialis');
+            $id = $this->input->post('id');
+            $this->db->set('spesialis', $bid_per);
+            $this->db->where('id', $id);
+            $this->db->update('bidang_spesialis');
+            $this->session->set_flashdata('success_update', true);
+            redirect('Admin/bidang_spesialis');
+        } else {
+            $this->session->set_flashdata('failed_update', true);
+            redirect('Admin/bidang_spesialis');
+        }
+    }
+
+    public function delete_specialist($id)
+    {
+        $this->db->delete('bidang_spesialis', ['id' => $id]);
+        $this->session->set_flashdata('success_delete', true);
+        redirect('Admin/bidang_spesialis');
+    }
+
     public function bidang_pekerjaan()
     {
         $var['title'] = 'Admin | Bidang Pekerjaan';
         $var['bidang_pekerjaan'] = $this->model->get_bidang_pekerjaan();
+        $var['spesialis'] = $this->model->get_bidang_spesialis();
         $var['edit'] = $this->model->get_bidang_pekerjaan();
         $this->load->view('admin/page2/bidang_pekerjaan', $var);
     }
@@ -78,6 +127,7 @@ class Admin extends CI_Controller
         $input = $this->input->post('bidang_pekerjaan');
         if (!empty($input)) {
             $data = [
+                'id_spesialis' => $this->input->post('id_spesialis'),
                 'bidang_pekerjaan' => $input,
             ];
             $this->db->insert('bidang_pekerjaan', $data);
@@ -94,8 +144,10 @@ class Admin extends CI_Controller
         $input = $this->input->post('bidang_pekerjaan');
         if (!empty($input)) {
             $bid_per = $this->input->post('bidang_pekerjaan');
+            $id_spesialis = $this->input->post('id_spesialis');
             $id = $this->input->post('id');
             $this->db->set('bidang_pekerjaan', $bid_per);
+            $this->db->set('id_spesialis', $id_spesialis);
             $this->db->where('id', $id);
             $this->db->update('bidang_pekerjaan');
             $this->session->set_flashdata('success_update', true);

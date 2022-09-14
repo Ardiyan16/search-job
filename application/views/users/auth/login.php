@@ -130,6 +130,14 @@
             showConfirmButton: true,
             // timer: 1500
         })
+
+        // <?php elseif ($this->session->flashdata('login_dulu')) : ?>
+        // Swal.fire({
+        //     icon: 'info',
+        //     title: 'Informasi!',
+        //     text: 'Anda harus login terlebih dahulu',
+        //     showConfirmButton: true,
+        // })
     <?php endif ?>
 </script>
 <?php $this->load->view('users/partials/footer') ?>

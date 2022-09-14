@@ -62,7 +62,7 @@
 </div>
 
 <!-- SCRIPTS -->
-<script src="<?= base_url() ?>assets/front/js/jquery.min.js"></script>
+<!-- <script src="<?= base_url() ?>assets/front/js/jquery.min.js"></script> -->
 <script src="<?= base_url() ?>assets/front/js/bootstrap.bundle.min.js"></script>
 <script src="<?= base_url() ?>assets/front/js/isotope.pkgd.min.js"></script>
 <script src="<?= base_url() ?>assets/front/js/stickyfill.min.js"></script>
@@ -78,6 +78,22 @@
 <script src="<?= base_url() ?>assets/front/js/bootstrap-select.min.js"></script>
 
 <script src="<?= base_url() ?>assets/front/js/custom.js"></script>
+
+<script src="<?= base_url() ?>assets/front/summernote/summernote-bs4.min.js"></script>
+<script src="<?= base_url() ?>assets/front/select2-4.0.6-rc.1/dist/js/select2.min.js"></script>
+<script src="<?= base_url() ?>assets/front/select2-4.0.6-rc.1/dist/js/i18n/id.js"></script>
+<script>
+    $(function() {
+        // Summernote
+        $('#summernote').summernote();
+        $('#summernote2').summernote()
+
+        // // CodeMirror
+        // CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+        //   mode: "htmlmixed",
+        //   theme: "monokai"
+    });
+</script>
 
 
 

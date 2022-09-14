@@ -18,14 +18,14 @@
 
         <div class="row mb-5 justify-content-center">
             <div class="col-md-7 text-center">
-                <h2 class="section-title mb-2">43,167 Job Listed</h2>
+                <h2 class="section-title mb-2"><?= $jml_loker ?> Lowongan Perusahaan Anda</h2>
             </div>
         </div>
         <a href="<?= base_url('Company/post_job') ?>" class="btn btn-primary mb-3"><i class="fa fa-plus-circle"></i> Tambah Lowongan</a>
         <ul class="job-listings mb-5">
             <?php foreach ($lowongan as $view) { ?>
                 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                    <a href="job-single.html"></a>
+                    <a href="<?= base_url('Company/detail_lowongan/' . $view->id) ?>"></a>
                     <div class="job-listing-logo">
                         <img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" alt="Image" class="img-fluid">
                     </div>
@@ -36,10 +36,16 @@
                             <strong><?= $view->nama_perusahaan ?></strong>
                         </div>
                         <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                            <span class="icon-room"></span> New York, New York
+                            <span class="fa fa-calendar"> <?= date("d-m-Y", strtotime($view->tgl_posting)) ?></span>
                         </div>
                         <div class="job-listing-meta">
-                            <span class="badge badge-danger">Part Time</span>
+                            <?php if ($view->status == '0') { ?>
+                                <span class="badge badge-success">Aktif</span>
+                            <?php } ?>
+                            <?php if ($view->status == '1') { ?>
+                                <span class="badge badge-danger">Non Aktif</span>
+                            <?php } ?>
+                            <!-- <a href="" data-toggle="modal" title="Edit" class="btn btn-primary" style="color: white;"><i class="fa fa-edit"></i></a> -->
                         </div>
                     </div>
                 </li>

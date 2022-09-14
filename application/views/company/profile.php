@@ -80,6 +80,14 @@
                         <?php } ?>
                     </div>
                     <div class="col-sm-12 col-md-12 mb-4 col-lg-12">
+                        <strong class="d-block text-black">Bidang Perusahaan</strong>
+                        <?php if ($view->bid_company == null) { ?>
+                            <?= 'Bidang Perusahaan belum di isikan' ?>
+                        <?php } else { ?>
+                            <?= $view->bidang_perusahaan ?>
+                        <?php } ?>
+                    </div>
+                    <div class="col-sm-12 col-md-12 mb-4 col-lg-12">
                         <strong class="d-block text-black">Email</strong>
                         <?= $view->email ?>
                     </div>
