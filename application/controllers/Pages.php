@@ -15,7 +15,7 @@ class Pages extends CI_Controller
     {
         $var['title'] = 'Home';
         $var['lowongan'] = $this->model->loker_home();
-        $var['company'] = $this->db->limit(6)->get('company')->result();
+        $var['company'] = $this->db->order_by('id', 'desc')->limit(8)->get('company')->result();
         $var['total_loker'] = $this->model->total_loker();
         $var['total_company'] = $this->model->total_company();
         $this->load->view('users/page/home', $var);
@@ -67,6 +67,7 @@ class Pages extends CI_Controller
         $users = $this->model->users();
         $pendidikan = $this->model->get_pendidikan();
         $keterampilan = $this->model->get_keterampilan();
+        $resume = $this->model->get_resume();
         if (!empty($this->session->userdata('id')) == NULL) {
             $this->session->set_flashdata('login_dulu', true);
             redirect('Pages/detail_lowongan/' . $id);
@@ -79,15 +80,59 @@ class Pages extends CI_Controller
         } elseif (empty($keterampilan)) {
             $this->session->set_flashdata('lengkapi_keterampilan', true);
             redirect('Pages/detail_lowongan/' . $id);
-        } elseif (empty($resum)) {
+        } elseif (empty($resume)) {
             $this->session->set_flashdata('lengkapi_resum', true);
             redirect('Pages/detail_lowongan/' . $id);
         } else {
+            if (empty($this->session->userdata('id'))) {
+                $this->session->set_flashdata('session_habis', true);
+                redirect('Auth');
+            }
+            $var['title'] = 'Lamar Online';
+            $var['view'] = $this->model->detail_lowongan($id);
+            $var['profile'] = $this->model->get_profile();
+            $var['gaji'] = $this->model->get_info_tambahan();
+            $this->load->view('users/page/apply_job', $var);
         }
+    }
+
+    public function save_lamaran()
+    {
+        $id_job = $this->input->post('id_job');
+        $id_users = $this->input->post('id_users');
+        $keterangan = $this->input->post('keterangan');
+        date_default_timezone_set('Asia/Jakarta');
+        $lamar = array(
+            'id_job' => $id_job,
+            'id_users' => $id_users,
+            'keterangan' => $keterangan,
+            'date_apply' => date('Y-m-d'),
+            'time_apply' => date('H:i'),
+            'status_lamaran' => 0
+        );
+        $this->db->insert('apply_job', $lamar);
+        $this->session->set_flashdata('lamaran_terkirim', true);
+        redirect('Pages/lamaran_saya');
+    }
+
+    public function lamaran_saya()
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $var['title'] = 'Lamaran Saya';
+        $var['view'] = $this->model->get_profile();
+        $var['lamaran'] = $this->model->get_lamaran();
+        $this->load->view('users/profile/lamaran_saya', $var);
     }
 
     public function bookmark_lamaran()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Lamaran Tersimpan';
         $var['bookmark'] = $this->model->lamaran_tersimpan();
         $this->load->view('users/profile/bookmark_lamaran', $var);
@@ -95,15 +140,28 @@ class Pages extends CI_Controller
 
     public function profile()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Profile';
         $var['view'] = $this->model->get_profile();
         $var['pendidikan'] = $this->model->get_pendidikan2();
         $var['pengalaman'] = $this->model->get_pengalaman();
+        $var['keterampilan'] = $this->model->get_keterampilan();
+        $var['data'] = $this->model->get_info_tambahan();
+        $var['info1'] = $this->model->get_info_tambahan2();
+        $var['info2'] = $this->model->get_info_tambahan3();
+        $var['info3'] = $this->model->get_info_tambahan4();
         $this->load->view('users/profile/profile', $var);
     }
 
     public function pendidikan()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Pendidikan';
         $var['view'] = $this->model->get_profile();
         $var['pendidikan'] = $this->model->get_pendidikan2();
@@ -112,6 +170,10 @@ class Pages extends CI_Controller
 
     public function tambah_pendidikan()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Tambah Pendidikan';
         $var['view'] = $this->model->get_profile();
         $var['provinsi'] = $this->db->get('provinces')->result_array();
@@ -138,6 +200,10 @@ class Pages extends CI_Controller
 
     public function edit_pendidikan($id)
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Tambah Pendidikan';
         $var['view'] = $this->model->get_profile();
         $var['provinsi'] = $this->db->get('provinces')->result_array();
@@ -174,6 +240,10 @@ class Pages extends CI_Controller
 
     public function pengalaman()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Pengalaman';
         $var['view'] = $this->model->get_profile();
         $var['pengalaman'] = $this->model->get_pengalaman();
@@ -182,6 +252,10 @@ class Pages extends CI_Controller
 
     public function tambah_pengalaman()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Tambah Pengalaman';
         $var['view'] = $this->model->get_profile();
         $var['spesialis'] = $this->db->get('bidang_spesialis')->result_array();
@@ -214,6 +288,10 @@ class Pages extends CI_Controller
 
     public function edit_pengalaman($id)
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Edit Pengalaman';
         $var['view'] = $this->model->get_profile();
         $var['spesialis'] = $this->db->get('bidang_spesialis')->result_array();
@@ -250,6 +328,10 @@ class Pages extends CI_Controller
 
     public function delete_pengalaman($id)
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $this->db->delete('pengalaman', ['id' => $id]);
         $this->session->set_flashdata('success_delete', true);
         redirect('Pages/pengalaman');
@@ -257,6 +339,10 @@ class Pages extends CI_Controller
 
     public function profile_saya()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $var['title'] = 'Profile Saya';
         $var['view'] = $this->model->get_profile();
         $this->load->view('users/profile/profile_saya', $var);
@@ -264,12 +350,16 @@ class Pages extends CI_Controller
 
     public function edit_profile()
     {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
         $id = $this->session->userdata('id');
         $var['title'] = 'Edit Profile Saya';
+        $var['edit'] = $this->db->get_where('users', ['id' => $id])->row();
         $var['view'] = $this->model->get_profile();
         $var['kota'] = $this->db->get('regencies')->result_array();
         $var['provinsi'] = $this->db->get('provinces')->result_array();
-        $var['edit'] = $this->db->get('users', ['id' => $id])->row();
         $this->load->view('users/page2/edit_profile', $var);
     }
 
@@ -293,5 +383,291 @@ class Pages extends CI_Controller
             $this->session->set_flashdata('success_update', true);
             redirect('Pages/profile_saya');
         }
+    }
+
+    public function kemampuan()
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $var['title'] = 'Kemampuan';
+        $var['view'] = $this->model->get_profile();
+        $var['keterampilan'] = $this->model->get_keterampilan();
+        $var['keterampilan2'] = $this->model->get_keterampilan();
+        $this->load->view('users/profile/keterampilan', $var);
+    }
+
+    public function save_kemampuan()
+    {
+        $keterampilan = array(
+            'id_users' => $this->input->post('id_users'),
+            'keterampilan' => $this->input->post('keterampilan'),
+            'tingkat' => $this->input->post('tingkat')
+        );
+        $this->db->insert('keterampilan', $keterampilan);
+        $this->session->set_flashdata('success_create', true);
+        redirect('Pages/kemampuan');
+    }
+
+    public function update_kemampuan()
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $keterampilan = $this->input->post('keterampilan');
+        $tingkat = $this->input->post('tingkat');
+        $id = $this->input->post('id');
+        $this->db->set('keterampilan', $keterampilan);
+        $this->db->set('tingkat', $tingkat);
+        $this->db->where('id', $id);
+        $this->db->update('keterampilan');
+        $this->session->set_flashdata('success_update', true);
+        redirect('Pages/kemampuan');
+    }
+
+    public function delete_kemampuan($id)
+    {
+        $this->db->delete('keterampilan', ['id' => $id]);
+        $this->session->set_flashdata('success_delete', true);
+        redirect('Pages/kemampuan');
+    }
+
+    public function info_tambahan()
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $var['title'] = 'Informasi Tambahan';
+        $var['view'] = $this->model->get_profile();
+        $var['data'] = $this->model->get_info_tambahan();
+        $var['info1'] = $this->model->get_info_tambahan2();
+        $var['info2'] = $this->model->get_info_tambahan3();
+        $var['info3'] = $this->model->get_info_tambahan4();
+        $this->load->view('users/profile/info_tambahan', $var);
+    }
+
+    public function add_info_tambahan()
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $var['title'] = 'Tambah Informasi Tambahan';
+        $var['view'] = $this->model->get_profile();
+        $var['provinsi'] = $this->db->get('provinces')->result_array();
+        $this->load->view('users/page2/create_info_tambahan', $var);
+    }
+
+    public function save_info_tambahan()
+    {
+        $this->form_validation->set_rules('gaji_diharapkan', 'gaji yang diharapkan', 'required|trim', ['required' => 'gaji yang diharapkan is required (gaji yang diharapkan harus di isi)']);
+        $this->form_validation->set_rules('provinsi1', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
+        $this->form_validation->set_rules('kota1', 'kota', 'required|trim', ['required' => 'kota is required (kota harus di isi)']);
+        $this->form_validation->set_rules('provinsi2', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
+        $this->form_validation->set_rules('kota2', 'kota', 'required|trim', ['required' => 'kota is required (kota harus di isi)']);
+        $this->form_validation->set_rules('provinsi3', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
+        $this->form_validation->set_rules('kota3', 'kota', 'required|trim', ['required' => 'kota is required (kota harus di isi)']);
+        if ($this->form_validation->run() == false) {
+            $this->add_info_tambahan();
+        } else {
+            $this->model->save_info_tambahan();
+            $this->session->set_flashdata('success_create', true);
+            redirect('Pages/info_tambahan');
+        }
+    }
+
+    public function edit_info_tambahan($id)
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $var['title'] = 'Edit Informasi Tambahan';
+        $var['view'] = $this->model->get_profile();
+        $var['edit'] = $this->db->get_where('info_tambahan', ['id' => $id])->row();
+        $var['kota'] = $this->db->get('regencies')->result_array();
+        $var['provinsi'] = $this->db->get('provinces')->result_array();
+        $this->load->view('users/page2/edit_info_tambahan', $var);
+    }
+
+    public function update_info_tambahan()
+    {
+        $id = $this->input->post('id');
+        $this->form_validation->set_rules('gaji_diharapkan', 'gaji yang diharapkan', 'required|trim', ['required' => 'gaji yang diharapkan is required (gaji yang diharapkan harus di isi)']);
+        $this->form_validation->set_rules('provinsi1', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
+        $this->form_validation->set_rules('kota1', 'kota', 'required|trim', ['required' => 'kota is required (kota harus di isi)']);
+        $this->form_validation->set_rules('provinsi2', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
+        $this->form_validation->set_rules('kota2', 'kota', 'required|trim', ['required' => 'kota is required (kota harus di isi)']);
+        $this->form_validation->set_rules('provinsi3', 'provinsi', 'required|trim', ['required' => 'provinsi is required (provinsi harus di isi)']);
+        $this->form_validation->set_rules('kota3', 'kota', 'required|trim', ['required' => 'kota is required (kota harus di isi)']);
+        if ($this->form_validation->run() == false) {
+            $this->edit_info_tambahan($id);
+        } else {
+            $this->model->update_info_tambahan();
+            $this->session->set_flashdata('success_update', true);
+            redirect('Pages/info_tambahan');
+        }
+    }
+
+    public function resume()
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $var['title'] = 'Resume';
+        $var['view'] = $this->model->get_profile();
+        $var['data'] = $this->model->get_resume();
+        $this->load->view('users/profile/resume', $var);
+    }
+
+    public function save_resume()
+    {
+        $file = $this->upload_file_resume();
+        date_default_timezone_set('Asia/Jakarta');
+        if (empty($file)) {
+            $this->session->set_flashdata('file_kosong', true);
+            redirect('Pages/resume');
+        } else {
+            $resume = array(
+                'id_users' => $this->input->post('id_users'),
+                'file' => $this->upload_file_resume(),
+                'tgl_unggah' => date('Y-m-d'),
+                'waktu' => date('H:i')
+            );
+            $this->db->insert('resume', $resume);
+            $this->session->set_flashdata('success_create', true);
+            redirect('Pages/resume');
+        }
+    }
+
+    public function update_resume()
+    {
+        $file = $this->upload_file_resume();
+        $id = $this->input->post('id');
+        date_default_timezone_set('Asia/Jakarta');
+        if (empty($file)) {
+            $this->session->set_flashdata('file_kosong', true);
+            redirect('Pages/resume');
+        } else {
+            $this->db->set('file', $this->upload_file_resume());
+            $this->db->where('id', $id);
+            $this->db->update('resume');
+            $this->session->set_flashdata('success_update', true);
+            redirect('Pages/resume');
+        }
+    }
+
+    private function upload_file_resume()
+    {
+        $config['upload_path']          = './assets/document/resume';
+        $config['allowed_types']        = 'pdf';
+        $nama_lengkap = $_FILES['file']['name'];
+        $config['file_name']            = $nama_lengkap;
+        $config['overwrite']            = true;
+        $config['max_size']             = 2024;
+
+        $this->upload->initialize($config);
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload('file')) {
+            return $this->upload->data("file_name");
+        }
+        print_r($this->upload->display_errors());
+    }
+
+    public function delete_resume($id)
+    {
+        $this->model->delete_resume($id);
+        $this->session->set_flashdata('success_delete', true);
+        redirect('Pages/resume');
+    }
+
+    public function company()
+    {
+        $var['title'] = 'Perusahaan';
+        $this->load->library('pagination');
+        $config['next_link'] = 'Next';
+        $config['prev_link'] = 'Prev';
+        $config['first_link'] = 'Awal';
+        $config['last_link'] = 'Akhir';
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_open'] = '<li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_open'] = '<li>';
+        $config['attributes'] = array('class' => 'page-link');
+        //$total = $this->M_produk->jumlah();
+        $config['base_url'] = base_url('Pages/company');
+        $config['total_rows'] = $this->model->count_all_company();
+        $data['total_rows'] = $config['total_rows'];
+        $config['per_page'] = 12;
+        $this->pagination->initialize($config);
+        $page['start'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $var['company'] = $this->model->pagination_company($config['per_page'], $page['start']);
+        // $var['pagination'] = $this->pagination->create_links();
+        // var_dump($data['total_rows']);
+        $this->load->view('users/page/company', $var);
+    }
+
+    public function search_company()
+    {
+        $var['title'] = 'Perusahaan';
+        $this->load->library('pagination');
+        if (!empty($this->input->post('company'))) {
+            $data['company'] = $this->input->post('company');
+            $this->session->set_userdata('company', $data['company']);
+        } else {
+            $data['company'] = $this->session->userdata('company');
+        }
+        $config['next_link'] = 'Next';
+        $config['prev_link'] = 'Prev';
+        $config['first_link'] = 'Awal';
+        $config['last_link'] = 'Akhir';
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_open'] = '<li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_open'] = '<li>';
+        $config['attributes'] = array('class' => 'page-link');
+        //$total = $this->M_produk->jumlah();
+        $config['base_url'] = base_url('Pages/company');
+        $config['total_rows'] = $this->model->count_all_company();
+        $data['total_rows'] = $config['total_rows'];
+        $config['per_page'] = 12;
+        $this->pagination->initialize($config);
+        $page['start'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $var['company'] = $this->model->search_company($config['per_page'], $page['start'], $data['company']);
+        // $var['pagination'] = $this->pagination->create_links();
+        // var_dump($data['total_rows']);
+        $this->load->view('users/page/company', $var);
+    }
+
+    public function detail_company($id)
+    {
+        $var['view'] = $this->model->detail_company($id);
+        $var['title'] = $var['view']->nama_perusahaan;
+        $this->load->view('users/page/detail_company', $var);
     }
 }

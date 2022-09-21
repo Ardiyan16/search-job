@@ -1,4 +1,6 @@
 <?php $this->load->view('company/partials/header') ?>
+<link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <section class="section-hero overlay inner-page bg-image" style="background-image: url(<?= base_url('assets/image/background.png') ?>);" id="home-section">
     <div class="container">
         <div class="row">
@@ -76,6 +78,69 @@
         </div>
     </div>
 </section>
+<section class="site-section">
+    <div class="container">
+        <div class="row mb-5 justify-content-center">
+            <div class="col-md-7 text-center">
+                <h2 class="section-title mb-2">Daftar Pelamar</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">List Pelamar</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="table_pelamar" class="display">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Domisili</th>
+                                        <th>Status</th>
+                                        <th>Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 1;
+                                    foreach ($pelamar as $view) { ?>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $view->nama_depan ?> <?= $view->nama_belakang ?></td>
+                                            <td><?= $view->email ?></td>
+                                            <td><?= $view->kota ?>, <?= $view->provinsi ?></td>
+                                            <td> <?php if ($view->status_lamaran == 0) {
+                                                        echo "<span class='badge badge-info' title='review' style='color: white;'>Dalam Review</span>";
+                                                    } elseif ($view->status_lamaran == 1) {
+                                                        echo "<span class='badge badge-success' title='terpilih' style='color: white;'>Terpilih</span>";
+                                                    } elseif ($view->status_lamaran == 2) {
+                                                        echo "<span class='badge badge-danger' title='tidak terpilih' style='color: white;'>Tidak Cocok</span>";
+                                                    }
+                                                    ?>
+                                            </td>
+                                            <td>
+                                                <a href="<?= base_url('Company/detail_pelamar/' . $view->id_users) ?>" title="Detail Pelamar" class="badge bg-primary" style="color: white;"><i class="fa fa-list"></i></a>
+                                                <a href="<?= base_url('assets/document/resume/' . $view->file) ?>" title="Download Resume" class="badge bg-info" style="color: white;"><i class="fa fa-download"></i></a>
+                                                <?php if ($view->status_lamaran < 1) { ?>
+                                                    <a href="<?= base_url("Company/terima_lamaran?id=" . $view->id . "&id_job=" . $view->id_job . "&job_title=" . $job->job_title . "&company=" . $job->nama_perusahaan . "&email=" . $view->email) ?>" title="Terima Lamaran" class="badge bg-success terima-lamaran" style="color: white;"><i class="fa fa-check"></i></a>
+                                                    <a href="<?= base_url("Company/tolak_lamaran?id=" . $view->id . "&id_job=" . $view->id_job . "&job_title=" . $job->job_title . "&company=" . $job->nama_perusahaan . "&email=" . $view->email) ?>" title="Lamaran Belum Cocok" class="badge bg-danger tolak-lamaran" style="color: white;"><i class="fa fa-times"></i></a>
+                                                <?php } ?>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <script>
     <?php if ($this->session->flashdata('success_post_job')) : ?>
         Swal.fire({
@@ -85,6 +150,68 @@
             showConfirmButton: true,
             // timer: 1500
         })
+
+    <?php elseif ($this->session->flashdata('terima_lamaran')) : ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Lamaran terpilih',
+            showConfirmButton: true,
+            // timer: 1500
+        })
+
+    <?php elseif ($this->session->flashdata('tolak_lamaran')) : ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Lamaran belum cocok',
+            showConfirmButton: true,
+            // timer: 1500
+        })
     <?php endif ?>
+
+    $('.terima-lamaran').on('click', function(e) {
+        e.preventDefault();
+        const link = $(this).attr('href');
+
+        Swal.fire({
+            title: 'Apakah anda yakin ?',
+            text: "Data lamaran diterima!",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#00a6fb',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Terima Lamaran!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.location.href = link;
+            }
+        })
+
+    })
+
+    $('.tolak-lamaran').on('click', function(e) {
+        e.preventDefault();
+        const link = $(this).attr('href');
+
+        Swal.fire({
+            title: 'Apakah anda yakin ?',
+            text: "Data lamaran ditolak!",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#00a6fb',
+            confirmButtonText: 'Tolak Lamaran!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.location.href = link;
+            }
+        })
+
+    })
+
+    $(document).ready(function() {
+        $('#table_pelamar').DataTable();
+    });
 </script>
 <?php $this->load->view('company/partials/footer') ?>

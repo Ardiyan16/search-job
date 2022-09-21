@@ -55,13 +55,11 @@
                         <hr>
                         <li><a href="<?= base_url('Pages/profile_saya') ?>">Profile Saya</a></li>
                         <hr>
-                        <li><a href="<?= base_url('Pages/kemampuan') ?>">Kemampuan</a></li>
+                        <li><a href="<?= base_url('Pages/kemampuan') ?>">Keterampilan</a></li>
                         <hr>
                         <li><a href="<?= base_url('Pages/info_tambahan') ?>">Info Tambahan</a></li>
                         <hr>
                         <li><a href="<?= base_url('Pages/resume') ?>">Unggah Resume</a></li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/bahasa') ?>">Bahasa</a></li>
                     </ul>
                 </div>
             </div>

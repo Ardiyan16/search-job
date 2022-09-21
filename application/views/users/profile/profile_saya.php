@@ -43,13 +43,11 @@
                         <hr>
                         <li><span class="active">Profile Saya</span></li>
                         <hr>
-                        <li><a href="<?= base_url('Pages/kemampuan') ?>">Kemampuan</a></li>
+                        <li><a href="<?= base_url('Pages/kemampuan') ?>">Keterampilan</a></li>
                         <hr>
                         <li><a href="<?= base_url('Pages/info_tambahan') ?>">Info Tambahan</a></li>
                         <hr>
                         <li><a href="<?= base_url('Pages/resume') ?>">Unggah Resume</a></li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/bahasa') ?>">Bahasa</a></li>
                     </ul>
                 </div>
             </div>
@@ -107,14 +105,14 @@
                             <?= $view->alamat ?>
                         <?php } ?>
                     </div>
-                    <div class="col-sm-12 col-md-12 mb-4 col-lg-12">
+                    <!-- <div class="col-sm-12 col-md-12 mb-4 col-lg-12">
                         <strong class="d-block text-black">Lokasi</strong>
                         <?php if ($view->kota == null) { ?>
                             <?= 'Lokasi belum di isikan' ?>
                         <?php } else { ?>
                             <?= $view->kota ?>
                         <?php } ?>
-                    </div>
+                    </div> -->
                     <div class="col-sm-12 col-md-12 mb-4 col-lg-12">
                         <strong class="d-block text-black">Jenis Kelamin</strong>
                         <?php if ($view->jenis_kelamin == null) { ?>

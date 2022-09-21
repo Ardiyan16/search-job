@@ -122,7 +122,11 @@
             </div>
             <?php foreach ($company as $view) { ?>
                 <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" title="<?= $view->nama_perusahaan ?>" alt="Image" class="img-fluid logo-1">
+                    <?php if (empty($view->logo)) { ?>
+                        <img src="<?= base_url('assets/image/company.png') ?>" title="<?= $view->nama_perusahaan ?>" alt="Image" class="img-fluid logo-1">
+                    <?php } else { ?>
+                        <img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" title="<?= $view->nama_perusahaan ?>" alt="Image" class="img-fluid logo-1">
+                    <?php } ?>
                 </div>
             <?php } ?>
         </div>

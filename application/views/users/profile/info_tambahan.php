@@ -4,10 +4,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7">
-                <h1 class="text-white font-weight-bold">Pendidikan</h1>
+                <h1 class="text-white font-weight-bold">Info tambahan</h1>
                 <div class="custom-breadcrumbs">
                     <a href="#"><?= $this->session->userdata('nama_depan') ?></a> <span class="mx-2 slash">/</span>
-                    <span class="text-white"><strong>Pendidikan</strong></span>
+                    <span class="text-white"><strong>Info tambahan</strong></span>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                             </span>
                         </li>
                         <hr>
-                        <li><span class="active">Pendidikan</span></li>
+                        <li><a href="<?= base_url('Pages/pendidikan') ?>">Pendidikan</a></li>
                         <hr>
                         <li><a href="<?= base_url('Pages/pengalaman') ?>">Pengalaman</a></li>
                         <hr>
@@ -45,7 +45,7 @@
                         <hr>
                         <li><a href="<?= base_url('Pages/kemampuan') ?>">Keterampilan</a></li>
                         <hr>
-                        <li><a href="<?= base_url('Pages/info_tambahan') ?>">Info Tambahan</a></li>
+                        <li><span class="active">Info Tambahan</span></li>
                         <hr>
                         <li><a href="<?= base_url('Pages/resume') ?>">Unggah Resume</a></li>
                     </ul>
@@ -53,32 +53,33 @@
             </div>
             <div class="col-lg-9">
                 <div class="mb-4">
-                    <h3 class="mb-4 h4 border-bottom">Pendidikan Anda</h3>
-                    <?php if (empty($pendidikan)) { ?>
-                        <a href="<?= base_url('Pages/tambah_pendidikan') ?>"><i class="fa fa-plus-circle"></i> Tambah Pendidikan</a>
+                    <h3 class="mb-4 h4 border-bottom">Informasi Tambahan</h3>
+                    <?php if (empty($data)) { ?>
+                        <a href="<?= base_url('Pages/add_info_tambahan') ?>"><i class="fa fa-plus-circle"></i> Tambah Informasi Tambahan</a>
+                    <?php } else { ?>
+                        <a href="<?= base_url('Pages/edit_info_tambahan/' . $data->id) ?>"><i class="fa fa-pencil"></i> Perbarui Informasi Tambahan</a>
                     <?php } ?>
                 </div>
-                <?php if (empty($pendidikan)) { ?>
-                    <?= '<p>Pendidikan belum di isikan</p>' ?>
-                <?php } else { ?>
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <h3 style="font-weight: bold;"><?= $pendidikan->nama_institusi ?></h3>
-                            <h5 style="font-weight: bold;"><?= $pendidikan->kualifikasi ?> bidang <?= $pendidikan->bidang_studi ?></h5>
-                            <p>Lokasi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $pendidikan->kota ?>, <?= $pendidikan->provinsi ?><br>
-                                Nilai &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $pendidikan->nilai ?>
-
+                <br>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <?php if (empty($data)) { ?>
+                            <p>Informasi tambahan belum diisikan</p>
+                        <?php } else { ?>
+                            <p>Gaji yang diharapkan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= 'Rp. '. number_format($info1->gaji_diharapkan) ?><br>
+                                Lokasi yang diharapkan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $info1->kota ?>, <?= $info1->provinsi ?><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $info2->kota ?>, <?= $info1->provinsi?><br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $info3->kota ?>, <?= $info3->provinsi?><br>
+                                Informasi lainnya : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;: <?= $info3->informasi_lainnya ?><br>
                             </p>
-                        </div>
-                        <div class="col-lg-3">
-                            <p><?= $pendidikan->bulan ?> <?= $pendidikan->tahun ?></p>
-                        </div>
-                        <div class="">
-                            <a href="<?= base_url('Pages/edit_pendidikan/' . $pendidikan->id) ?>" title="edit"><i class="fa fa-edit"></i></a>
-                            <a href="<?= base_url('Pages/delete_pendidikan/' . $pendidikan->id) ?>" class="link-hapus" title="hapus"><i class="fa fa-trash"></i></a>
-                        </div>
+                        <?php } ?>
                     </div>
-                <?php } ?>
+                </div>
             </div>
         </div>
     </div>
@@ -88,16 +89,7 @@
         Swal.fire({
             icon: 'success',
             title: 'Berhasil!',
-            text: 'data pendidikan anda berhasil ditambahkan',
-            showConfirmButton: true,
-            // timer: 1500
-        })
-
-    <?php elseif ($this->session->flashdata('success_update')) : ?>
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: 'data pendidikan anda berhasil diupdate',
+            text: 'informasi tambahan berhasil disimpan',
             showConfirmButton: true,
             // timer: 1500
         })
@@ -106,30 +98,19 @@
         Swal.fire({
             icon: 'success',
             title: 'Berhasil!',
-            text: 'data pendidikan anda berhasil dihapus',
+            text: 'informasi tambahan berhasil dihapus',
+            showConfirmButton: true,
+            // timer: 1500
+        })
+
+    <?php elseif ($this->session->flashdata('success_update')) : ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'informasi tambahan berhasil diperbarui',
             showConfirmButton: true,
             // timer: 1500
         })
     <?php endif ?>
-
-    $('.link-hapus').on('click', function(e) {
-        e.preventDefault();
-        const link = $(this).attr('href');
-
-        Swal.fire({
-            title: 'Apakah anda yakin ?',
-            text: "Data pendidikan akan dihapus!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#828282',
-            confirmButtonText: 'Hapus Data!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.location.href= link;
-            }
-        })
-
-    })
 </script>
 <?php $this->load->view('users/partials/footer') ?>

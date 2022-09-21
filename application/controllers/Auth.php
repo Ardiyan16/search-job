@@ -460,6 +460,7 @@ class Auth extends CI_Controller
             'no_telp' => $this->input->post('no_telp'),
             'nama_perusahaan' => $this->input->post('nama_perusahaan'),
             'password' => password_hash($password, PASSWORD_BCRYPT),
+            'bid_company' => 0,
             'status' => 0,
         );
 

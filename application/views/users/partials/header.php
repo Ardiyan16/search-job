@@ -58,7 +58,7 @@
                         <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
                             <li><a href="<?= base_url('Pages') ?>" class="nav-link">Home</a></li>
                             <li><a href="<?= base_url('Pages/lowongan') ?>">Lowongan</a></li>
-                            <li><a href="about.html">Perusahaan</a></li>
+                            <li><a href="<?= base_url('Pages/company') ?>">Perusahaan</a></li>
                             <li class="has-children">
                                 <a href="services.html">Konten</a>
                                 <ul class="dropdown">
@@ -74,7 +74,7 @@
                                     <a href="#"><?= $this->session->userdata('nama_depan') ?></a>
                                     <ul class="dropdown">
                                         <li><a href="<?= base_url('Pages/profile') ?>">Profile</a></li>
-                                        <li><a href="">Lamaran Anda</a></li>
+                                        <li><a href="<?= base_url('Pages/lamaran_saya') ?>">Lamaran Anda</a></li>
                                         <li><a href="<?= base_url('Pages/bookmark_lamaran') ?>">Lamaran Disimpan</a></li>
                                     </ul>
                                 </li>

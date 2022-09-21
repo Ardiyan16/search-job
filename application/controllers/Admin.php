@@ -17,6 +17,28 @@ class Admin extends CI_Controller
         $this->load->view('admin/page/dashboard', $var);
     }
 
+    public function users()
+    {
+        $var['title'] = 'Admin | User/Pelamar';
+        $var['users'] = $this->model->get_users();
+        $this->load->view('admin/page/users', $var);
+    }
+
+    public function detail_users($id)
+    {
+        $var['title'] = 'Admin | Detail User/Pelamar';
+        $var['title'] = 'Profile';
+        $var['view'] = $this->model->get_profile($id);
+        $var['pendidikan'] = $this->model->get_pendidikan2($id);
+        $var['pengalaman'] = $this->model->get_pengalaman($id);
+        $var['keterampilan'] = $this->model->get_keterampilan($id);
+        $var['data'] = $this->model->get_info_tambahan($id);
+        $var['info1'] = $this->model->get_info_tambahan2($id);
+        $var['info2'] = $this->model->get_info_tambahan3($id);
+        $var['info3'] = $this->model->get_info_tambahan4($id);
+        $this->load->view('admin/page/detail_users', $var);
+    }
+
     public function bidang_perusahaan()
     {
         $var['title'] = 'Admin | Bidang Perusahaan';

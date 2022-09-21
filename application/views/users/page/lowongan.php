@@ -25,6 +25,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                             <select id="provinsi" name="provinsi">
+                                <option></option>
                                 <?php foreach ($provinsi as $prov) {
                                     echo '<option value="' . $prov['id'] . '">' . $prov['name'] . '</option>';
                                 }
@@ -60,9 +61,9 @@
         <ul class="job-listings mb-5">
             <?php foreach ($lowongan as $view) { ?>
                 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                    <a href="<?= base_url('Pages/detail_lowongan/' . $view->id) ?>"></a>
+                    <a target="_blank" href="<?= base_url('Pages/detail_lowongan/' . $view->id) ?>"></a>
                     <div class="job-listing-logo">
-                        <img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" alt="Image" class="img-fluid">
+                        <img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" width="100" alt="Image" class="img-fluid">
                     </div>
 
                     <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
@@ -71,7 +72,31 @@
                             <strong><?= $view->nama_perusahaan ?></strong>
                         </div>
                         <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                            <span class="fa fa-calendar"> </span> <?= date("d-m-Y", strtotime($view->tgl_posting)) ?>
+                            <span class="fa fa-clock-o"> </span>
+                            <?php
+                            $post = $view->tgl_posting;
+                            $tgl_post = new DateTime($post);
+                            $hari_ini = new DateTime("today");
+                            if ($tgl_post > $hari_ini) {
+                                exit("0 tahun 0 bulan 0 hari");
+                            }
+                            $h = $hari_ini->diff($tgl_post)->h;
+                            $d = $hari_ini->diff($tgl_post)->d;
+                            $m = $hari_ini->diff($tgl_post)->m;
+                            $y = $hari_ini->diff($tgl_post)->y;
+                            ?>
+                            <!-- <?= $h . ',' . $d . ',' . $m .','. $y ?> -->
+                            <?php if ($h > 0) {
+                                echo $h . ' jam yang lalu';
+                            } elseif ($d > 0) {
+                                echo $d . ' hari yang lalu';
+                            } elseif ($m > 0) {
+                                echo $m . ' bulan yang lalu';
+                            } elseif ($y > 0) {
+                                echo $y . ' tahun yang lalu';
+                            }
+                            ?>
+                            <!-- <?= date("d-m-Y", strtotime($view->tgl_posting)) ?> -->
                         </div>
                         <div class="">
                             <span class="fa fa-map-maker"></span><?= $view->city ?>, <?= $view->provinces ?>

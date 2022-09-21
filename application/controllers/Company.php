@@ -9,12 +9,16 @@ class Company extends CI_Controller
         parent::__construct();
         $this->load->model('M_admin', 'admin');
         $this->load->model('M_company', 'model');
+        $this->load->model('M_pages', 'pages');
         $this->load->library('form_validation');
     }
 
     public function index()
     {
         $var['title'] = 'Company | Home';
+        $var['company'] = $this->db->order_by('id', 'desc')->limit(8)->get('company')->result();
+        $var['total_company'] = $this->pages->total_company();
+        $var['total_kandidat'] = $this->model->total_users();
         $this->load->view('company/home', $var);
     }
 
@@ -106,8 +110,13 @@ class Company extends CI_Controller
 
     public function detail_lowongan($id)
     {
+        if (empty($this->session->userdata('nama_perusahaan'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth/login_company');
+        }
         $var['title'] = 'Company | Detail Lowongan';
         $var['job'] = $this->model->detail_lowongan($id);
+        $var['pelamar'] = $this->model->get_pelamar($id);
         $this->load->view('company/job/detail_post', $var);
     }
 
@@ -186,5 +195,124 @@ class Company extends CI_Controller
             $this->session->set_flashdata('success_update', true);
             redirect('Company/profile');
         }
+    }
+
+    public function detail_pelamar($id)
+    {
+        $var['view'] = $this->model->get_profile($id);
+        $var['pendidikan'] = $this->model->get_pendidikan2($id);
+        $var['pengalaman'] = $this->model->get_pengalaman($id);
+        $var['keterampilan'] = $this->model->get_keterampilan($id);
+        $var['data'] = $this->model->get_info_tambahan($id);
+        $var['info1'] = $this->model->get_info_tambahan2($id);
+        $var['info2'] = $this->model->get_info_tambahan3($id);
+        $var['info3'] = $this->model->get_info_tambahan4($id);
+        $var['title'] = 'Company | ' . $var['view']->nama_depan;
+        $this->load->view('company/job/detail_pelamar', $var);
+    }
+
+    public function terima_lamaran()
+    {
+        $id = $this->input->get('id');
+        $id_job = $this->input->get('id_job');
+        $job_title = $this->input->get('job_title');
+        $company = $this->input->get('company');
+        $email = $this->input->get('email');
+        $this->db->set('status_lamaran', 1);
+        $this->db->where('id', $id);
+        $this->db->update('apply_job');
+        $this->send_feedback('diterima', $job_title, $company, $email);
+        $this->session->set_flashdata('terima_lamaran', true);
+        redirect('Company/detail_lowongan/' . $id_job);
+    }
+
+    public function tolak_lamaran()
+    {
+        $id = $this->input->get('id');
+        $id_job = $this->input->get('id_job');
+        $job_title = $this->input->get('job_title');
+        $company = $this->input->get('company');
+        $email = $this->input->get('email');
+        $this->db->set('status_lamaran', 2);
+        $this->db->where('id', $id);
+        $this->db->update('apply_job');
+        $this->send_feedback('belum_diterima', $job_title, $company, $email);
+        $this->session->set_flashdata('tolak_lamaran', true);
+        redirect('Company/detail_lowongan/' . $id_job);
+    }
+
+    private function send_feedback($type, $job_title, $company, $email)
+    {
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_user' => 'searchjobb22@gmail.com',
+            'smtp_pass' => 'wxwlkjtmqnnnfksu',
+            'smtp_port' => 465,
+            'mailtype' => 'html',
+            'charset' => 'utf-8',
+            'newline' => "\r\n"
+        ];
+        $this->load->library('email', $config);
+        $this->email->from('searchjobb22@gmail.com', 'Search Job');
+
+        $this->email->to($email);
+
+        $pengguna = $email;
+        if ($type == 'diterima') {
+            $this->email->subject('Status Lamaran Anda');
+            $this->email->message(
+                '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <div class="card-body">
+            <p class="card-title" style="margin-top: 43px;">YTH :' .  $pengguna . '</p>
+            <p class="card-text">Lamaran yang anda ajukan pada :</p>
+            <br>
+            <p>Nama Perusahaan :&nbsp;' . $company . '</p><br>
+            <p>Posisi :&nbsp;' . $job_title . '</p>
+            <br>
+            <p class="card-text" style="margin-top: 30px;">Telah masuk ke dalam daftar terpilih. tunggu pihak perusahaan menghubungi anda lebih lanjut</p>
+            <p>Selamat, semoga anda beruntung pada kesempatan ini</p>
+            <p>Terima Kasih,</p>
+            <p>Search Job Team</p>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        </div>'
+            );
+        } else if ($type == 'belum_diterima') {
+            $this->email->subject('Status Lamaran Anda');
+            $this->email->message(
+                '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <div class="card-body">
+            <p class="card-title" style="margin-top: 43px;">YTH :' .  $pengguna . '</p>
+            <p class="card-text">Lamaran yang anda ajukan pada :</p>
+            <br>
+            <p>Nama Perusahaan :&nbsp;' . $company . '</p><br>
+            <p>Posisi :&nbsp;' . $job_title . '</p>
+            <br>
+            <p class="card-text" style="margin-top: 30px;">Belum dapat diproses lebih lanjut atau belum cocok dengan pihak perusahaan</p>
+            <p>Tetap semangat anda masih memiliki kesempatan lain</p>
+            <p>Terima Kasih,</p>
+            <p>Search Job Team</p>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        </div>'
+            );
+        }
+
+
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
+    }
+
+    public function about()
+    {
+        $var['title'] = 'Company | About';
+        $this->load->view('company/about', $var);
     }
 }

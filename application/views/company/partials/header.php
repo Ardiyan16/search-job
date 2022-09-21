@@ -57,7 +57,7 @@
                     <nav class="mx-auto site-navigation">
                         <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
                             <li><a href="<?= base_url('Company') ?>" class="nav-link">Home</a></li>
-                            <li><a href="about.html">About</a></li>
+                            <li><a href="<?= base_url('Company/about') ?>">About</a></li>
                             <?php if ($this->session->userdata('nama_perusahaan')) { ?>
                                 <li class="has-children">
                                     <a href="job-listings.html">Job</a>
@@ -67,33 +67,19 @@
                                     </ul>
                                 </li>
                             <?php } ?>
-                            <li class="has-children">
-                                <a href="services.html">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="services.html">Services</a></li>
-                                    <li><a href="service-single.html">Service Single</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="portfolio-single.html">Portfolio Single</a></li>
-                                    <li><a href="testimonials.html">Testimonials</a></li>
-                                    <li><a href="faq.html">Frequently Ask Questions</a></li>
-                                    <li><a href="gallery.html">Gallery</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <?php if ($this->session->userdata('nama_depan')) { ?>
                                 <li class="has-children">
-                                    <a href="services.html"><?= $this->session->userdata('nama_depan') ?></a>
+                                    <a href="services.html">Pages</a>
                                     <ul class="dropdown">
-                                        <li><a href="services.html">Profile</a></li>
-                                        <li><a href="service-single.html">Lamaran Anda</a></li>
+                                        <li><a href="services.html">Rekap Talenta</a></li>
+                                        <li><a href="service-single.html">Proses Rectuitment</a></li>
+                                        <li><a href="portfolio.html">Events</a></li>
+                                        <li><a href="testimonials.html">Hubungi Kami</a></li>
+                                        <li><a href="gallery.html">Gallery</a></li>
                                     </ul>
                                 </li>
-                            <?php } ?>
+                            <li><a href="blog.html">Blog</a></li>
                         </ul>
                     </nav>
-
                     <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                         <div class="ml-auto">
                             <?php if ($this->session->userdata('nama_perusahaan')) { ?>

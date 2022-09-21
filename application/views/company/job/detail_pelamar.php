@@ -1,13 +1,13 @@
-<?php $this->load->view('users/partials/header') ?>
+<?php $this->load->view('company/partials/header') ?>
 
 <section class="section-hero overlay inner-page bg-image" style="background-image: url(<?= base_url('assets/image/background-home.png') ?>);" id="home-section">
     <div class="container">
         <div class="row">
             <div class="col-md-7">
-                <h1 class="text-white font-weight-bold">Profile</h1>
+                <h1 class="text-white font-weight-bold">Pelamar</h1>
                 <div class="custom-breadcrumbs">
-                    <a href="#"><?= $this->session->userdata('nama_depan') ?></a> <span class="mx-2 slash">/</span>
-                    <span class="text-white"><strong>Profile</strong></span>
+                    <a href="#">Detail Pelamar</a> <span class="mx-2 slash">/</span>
+                    <span class="text-white"><strong><?= $view->nama_depan ?> <?= $view->nama_belakang ?></strong></span>
                 </div>
             </div>
         </div>
@@ -24,43 +24,26 @@
                 <div class="border p-4 rounded">
                     <ul class="list-unstyled block__47528 mb-0">
                         <li><span active>
-                                <div class="col-lg-4">
+                                <div class="col-lg-12">
                                     <?php if ($view->picture == NULL) { ?>
                                         <a href="<?= base_url('assets/image/user.png') ?>" data-fancybox="gallery"><img src="<?= base_url('assets/image/user.png') ?>" height="100" width="100" alt="Image" title="foto anda" class="img-fluid"></a>
                                     <?php } else { ?>
                                         <a href="<?= base_url('assets/image/picture_users/' . $view->picture) ?>" data-fancybox="gallery"><img src="<?= base_url('assets/image/picture_users/' . $view->picture) ?>" height="100" width="100" alt="Image" title="foto anda" class="img-fluid"></a>
                                     <?php } ?>
                                 </div>
-                                <div class="col-lg-8">
-                                    <p><?= $view->nama_depan ?> (lihat profile)</p>
-                                </div>
                             </span>
+                            <div class="col-lg-8">
+                                <p><?= $view->nama_depan ?> (lihat profile)</p>
+                            </div>
                         </li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/pendidikan') ?>">Pendidikan</a></li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/pengalaman') ?>">Pengalaman</a></li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/profile_saya') ?>">Profile Saya</a></li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/kemampuan') ?>">Keterampilan</a></li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/info_tambahan') ?>">Info Tambahan</a></li>
-                        <hr>
-                        <li><a href="<?= base_url('Pages/resume') ?>">Unggah Resume</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-9">
                 <div class="mb-4">
-                    <h3 class="mb-4 h4 border-bottom">Profile Lengkap Anda</h3>
+                    <h3 class="mb-4 h4 border-bottom">Profile Lengkap Pelamar</h3>
                     <!-- <a href="<?= base_url('Company/edit_profile') ?>" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit / Lengkapi Profile</a> -->
                 </div>
-                <?php if ($view->picture == NULL) { ?>
-                    <a href="<?= base_url('assets/image/user.png') ?>" data-fancybox="gallery"><img src="<?= base_url('assets/image/user.png') ?>" height="100" width="100" alt="Image" title="foto anda" class="img-fluid"></a>
-                <?php } else { ?>
-                    <a href="<?= base_url('assets/image/picture_users/' . $view->picture) ?>" data-fancybox="gallery"><img src="<?= base_url('assets/image/picture_users/' . $view->picture) ?>" height="100" width="100" alt="Image" title="foto anda" class="img-fluid"></a>
-                <?php } ?>
                 <br>
 
                 <div class="row mb-4 mt-3">
@@ -131,7 +114,7 @@
                     </div>
                 </div>
                 <div class="mb-4">
-                    <h3 class="mb-4 h4 border-bottom">Pendidikan Anda</h3>
+                    <h3 class="mb-4 h4 border-bottom">Pendidikan Pelamar</h3>
                 </div>
                 <?php if (empty($pendidikan)) { ?>
                     <?= '<p>Pendidikan belum di isikan</p>' ?>
@@ -151,7 +134,7 @@
                     </div>
                 <?php } ?>
                 <div class="mb-4 mt-5">
-                    <h3 class="mb-4 h4 border-bottom">Pengalaman Anda</h3>
+                    <h3 class="mb-4 h4 border-bottom">Pengalaman Pelamar</h3>
                     <?php if (empty($pengalaman)) { ?>
                         <?= '<p>Pengalaman belum di isikan</p>' ?>
                     <?php } else { ?>
@@ -235,4 +218,4 @@
     </div>
 </section>
 
-<?php $this->load->view('users/partials/footer') ?>
+<?php $this->load->view('company/partials/footer') ?>

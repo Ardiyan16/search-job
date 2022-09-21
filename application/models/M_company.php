@@ -5,6 +5,7 @@ class M_company extends CI_Model
 {
     private $company = 'company';
     private $loker = 'post_job';
+    private $info = 'info_tambahan';
 
     public function get_company()
     {
@@ -144,5 +145,101 @@ class M_company extends CI_Model
         $this->updated_at = date("Y-m-d");
         $this->id_company = $post['id_company'];
         $this->db->update($this->loker, $this, ['id' => $post['id']]);
+    }
+
+    public function total_users()
+    {
+        $this->db->select('COUNT(id) as jml');
+        $this->db->from('users');
+        $this->db->where('status', '1');
+        return $this->db->get()->row()->jml;
+    }
+
+    public function get_pelamar($id)
+    {
+        $this->db->select('aj.*, u.nama_depan, u.nama_belakang, u.email, reg.name kota, prov.name provinsi, r.file');
+        $this->db->from('apply_job aj');
+        $this->db->join('users u', 'aj.id_users = u.id');
+        $this->db->join('regencies reg', 'u.kota = reg.id');
+        $this->db->join('provinces prov', 'u.provinsi = prov.id');
+        $this->db->join('resume r', 'u.id = r.id_users');
+        $this->db->where('id_job', $id);
+        return $this->db->get()->result();
+    }
+
+    public function get_profile($id)
+    {
+        // $this->db->select('users.*, reg.name kota, prov.name provinsi');
+        // $this->db->from('users');
+        // $this->db->join('regencies reg', 'users.kota = reg.id');
+        // $this->db->join('provinces prov', 'users.provinsi = prov.id');
+        // $this->db->where('users.id', $id);
+        // return $this->db->get()->row();
+        return $this->db->get_where('users', ['id' => $id])->row();
+    }
+
+    public function get_pendidikan2($id)
+    {
+        $this->db->select('pendidikan.*, reg.name kota, prov.name provinsi');
+        $this->db->from('pendidikan');
+        $this->db->join('regencies reg', 'pendidikan.kota = reg.id');
+        $this->db->join('provinces prov', 'pendidikan.provinsi = prov.id');
+        $this->db->where('id_user', $id);
+        return $this->db->get()->row();
+    }
+
+    public function get_pengalaman($id)
+    {
+        $this->db->select('peng.*, bs.spesialis, bp.bidang_pekerjaan, reg.name kota, prov.name provinsi, bpr.bidang_perusahaan');
+        $this->db->from('pengalaman peng');
+        $this->db->join('bidang_spesialis bs', 'peng.bidang = bs.id');
+        $this->db->join('bidang_pekerjaan bp', 'peng.keahlian = bp.id');
+        $this->db->join('regencies reg', 'peng.city = reg.id');
+        $this->db->join('provinces prov', 'peng.provinces = prov.id');
+        $this->db->join('bidang_perusahaan bpr', 'peng.industri = bpr.id');
+        $this->db->where('id_users', $id);
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->result();
+        // return $this->db->get_where('pengalaman', ['id_users' => $id])->result();
+    }
+
+    public function get_keterampilan($id)
+    {
+        return $this->db->get_where('keterampilan', ['id_users' => $id])->result();
+    }
+
+    public function get_info_tambahan($id)
+    {
+        return $this->db->get_where($this->info, ['id_users' => $id])->row();
+    }
+
+    public function get_info_tambahan2($id)
+    {
+        $this->db->select('it.*, prov.name provinsi, reg.name kota');
+        $this->db->from('info_tambahan it');
+        $this->db->join('provinces prov', 'it.provinsi1 = prov.id');
+        $this->db->join('regencies reg', 'it.kota1 = reg.id');
+        $this->db->where('id_users', $id);
+        return $this->db->get()->row();
+    }
+
+    public function get_info_tambahan3($id)
+    {
+        $this->db->select('it.*, prov.name provinsi, reg.name kota');
+        $this->db->from('info_tambahan it');
+        $this->db->join('provinces prov', 'it.provinsi2 = prov.id');
+        $this->db->join('regencies reg', 'it.kota2 = reg.id');
+        $this->db->where('id_users', $id);
+        return $this->db->get()->row();
+    }
+
+    public function get_info_tambahan4($id)
+    {
+        $this->db->select('it.*, prov.name provinsi, reg.name kota');
+        $this->db->from('info_tambahan it');
+        $this->db->join('provinces prov', 'it.provinsi3 = prov.id');
+        $this->db->join('regencies reg', 'it.kota3 = reg.id');
+        $this->db->where('id_users', $id);
+        return $this->db->get()->row();
     }
 }

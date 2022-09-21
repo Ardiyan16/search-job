@@ -185,5 +185,14 @@
                     showConfirmButton: true,
                     // timer: 1500
                 })
+
+            <?php elseif ($this->session->flashdata('session_habis')) : ?>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Pemberitahuan!',
+                    text: 'Sesi anda habis, silahkan login kembali',
+                    showConfirmButton: true,
+                    // timer: 1500
+                })
             <?php endif ?>
         </script>

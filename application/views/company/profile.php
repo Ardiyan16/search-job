@@ -81,7 +81,7 @@
                     </div>
                     <div class="col-sm-12 col-md-12 mb-4 col-lg-12">
                         <strong class="d-block text-black">Bidang Perusahaan</strong>
-                        <?php if ($view->bid_company == null) { ?>
+                        <?php if ($view->bid_company == 0) { ?>
                             <?= 'Bidang Perusahaan belum di isikan' ?>
                         <?php } else { ?>
                             <?= $view->bidang_perusahaan ?>
@@ -100,7 +100,7 @@
                         <?php if ($view->situs == null) {
                             echo 'Situs belum di isikan';
                         } else { ?>
-                            <a href="#"><?= $view->situs ?></a>
+                            <a target="_blank" href="<?= $view->situs ?>"><?= $view->situs ?></a>
                         <?php } ?>
                     </div>
                 </div>
