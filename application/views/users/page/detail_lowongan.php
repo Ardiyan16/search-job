@@ -46,7 +46,11 @@
                         <?php } ?>
                     </div>
                     <div class="col-6">
-                        <a href="<?= base_url('Pages/lamar_pekerjaan/' . $job->id) ?>" class="btn btn-block btn-primary btn-md">Lamar Sekarang</a>
+                        <?php if (empty($sudah_melamar)) { ?>
+                            <a href="<?= base_url('Pages/lamar_pekerjaan/' . $job->id) ?>" class="btn btn-block btn-primary btn-md">Lamar Sekarang</a>
+                        <?php } else { ?>
+                            <a href="#" class="btn btn-block btn-primary btn-md">Anda Sudah Melamar</a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

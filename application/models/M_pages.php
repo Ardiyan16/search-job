@@ -12,12 +12,15 @@ class M_pages extends CI_Model
 
     public function loker_home()
     {
-        $this->db->select('pj.*, com.nama_perusahaan,com.logo, jepek.jenis_kerja');
+        $this->db->select('pj.*, com.nama_perusahaan,com.logo, jepek.jenis_kerja, reg.name kota, prov.name provinsi');
         $this->db->from('post_job pj');
         $this->db->join('company com', 'pj.id_company = com.id');
         $this->db->join('jenis_pekerjaan jepek', 'pj.jenis_pekerjaan = jepek.id');
+        $this->db->join('regencies reg', 'pj.kota = reg.id');
+        $this->db->join('provinces prov', 'pj.provinsi = prov.id');
+        $this->db->where('pj.status', '0');
         $this->db->order_by('pj.id', 'desc');
-        $this->db->limit(5);
+        $this->db->limit(10);
         return $this->db->get()->result();
     }
 
@@ -37,7 +40,7 @@ class M_pages extends CI_Model
         return $this->db->get()->row()->jml;
     }
 
-    public function get_lowongan()
+    public function get_lowongan($perpage, $start)
     {
         $this->db->select('pj.*, com.nama_perusahaan,com.logo, jepek.jenis_kerja, reg.name city, prov.name provinces');
         $this->db->from('post_job pj');
@@ -45,8 +48,42 @@ class M_pages extends CI_Model
         $this->db->join('jenis_pekerjaan jepek', 'pj.jenis_pekerjaan = jepek.id');
         $this->db->join('regencies reg', 'pj.kota = reg.id');
         $this->db->join('provinces prov', 'pj.provinsi = prov.id');
+        $this->db->where('pj.status', '0');
         $this->db->order_by('pj.id', 'desc');
-        return $this->db->get()->result();
+        return $this->db->get('', $perpage, $start)->result();
+    }
+
+    public function search_lowongan($job_title, $provinsi, $kota, $perpage, $start)
+    {
+        $this->db->select('pj.*, com.nama_perusahaan,com.logo, jepek.jenis_kerja, reg.name city, prov.name provinces');
+        $this->db->from('post_job pj');
+        $this->db->like('job_title', $job_title);
+        $this->db->like('provinsi', $provinsi);
+        $this->db->like('pj.kota', $kota);
+        $this->db->join('company com', 'pj.id_company = com.id');
+        $this->db->join('jenis_pekerjaan jepek', 'pj.jenis_pekerjaan = jepek.id');
+        $this->db->join('regencies reg', 'pj.kota = reg.id');
+        $this->db->join('provinces prov', 'pj.provinsi = prov.id');
+        $this->db->where('pj.status', '0');
+        $this->db->order_by('pj.id', 'desc');
+        return $this->db->get('', $perpage, $start)->result();
+    }
+
+    public function count_all_lowongan()
+    {
+        $this->db->where('status', 0);
+        $this->db->order_by('id', 'desc');
+        return $this->db->get('post_job')->num_rows();
+    }
+
+    public function count_all_search($job_title, $provinsi, $kota)
+    {
+        $this->db->like('job_title', $job_title);
+        $this->db->like('provinsi', $provinsi);
+        $this->db->like('kota', $kota);
+        $this->db->where('status', 0);
+        $this->db->order_by('id', 'desc');
+        return $this->db->get('post_job')->num_rows();
     }
 
     public function detail_lowongan($id)
@@ -361,7 +398,7 @@ class M_pages extends CI_Model
         }
     }
 
-    public function get_lamaran()
+    public function get_lamaran($perpage, $start)
     {
         $id = $this->session->userdata('id');
         $this->db->select('aj.*, pj.*, c.logo, c.nama_perusahaan');
@@ -370,7 +407,17 @@ class M_pages extends CI_Model
         $this->db->join('company c', 'pj.id_company = c.id');
         $this->db->where('aj.id_users', $id);
         $this->db->order_by('aj.id', 'desc');
-        return $this->db->get()->result();
+        return $this->db->get('', $perpage, $start)->result();
+    }
+
+    public function count_lamaran_saya()
+    {
+        $id = $this->session->userdata('id');
+        $this->db->select('COUNT(id) as jml');
+        $this->db->from('apply_job aj');
+        $this->db->where('aj.id_users', $id);
+        $this->db->order_by('aj.id', 'desc');
+        return $this->db->get()->row()->jml;
     }
 
     public function pagination_company($limit, $start)
@@ -414,11 +461,47 @@ class M_pages extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function jumlah_lowongan_perusahaan()
+    public function jumlah_lowongan_perusahaan($id)
     {
-        $this->db->select('COUNT(id) as jml');
-        $this->db->from('company');
-        $this->db->where('status', '1');
+        $this->db->select('COUNT(psj.id) as jml');
+        $this->db->from('post_job psj');
+        $this->db->join('company cm', 'psj.id_company = cm.id');
+        $this->db->where('cm.id', $id);
         return $this->db->get()->row()->jml;
+    }
+
+    public function lowongan_perusahaan($id)
+    {
+        $this->db->select('pj.*, com.nama_perusahaan,com.logo, jepek.jenis_kerja, reg.name kota, prov.name provinsi');
+        $this->db->from('post_job pj');
+        $this->db->join('company com', 'pj.id_company = com.id');
+        $this->db->join('jenis_pekerjaan jepek', 'pj.jenis_pekerjaan = jepek.id');
+        $this->db->join('regencies reg', 'pj.kota = reg.id');
+        $this->db->join('provinces prov', 'pj.provinsi = prov.id');
+        $this->db->where('pj.status', '0');
+        $this->db->where('com.id', $id);
+        $this->db->order_by('pj.id', 'desc');
+        return $this->db->get()->result();
+    }
+
+    public function sudah_melamar2($id)
+    {
+        $id_users = $this->session->userdata('id');
+        $this->db->select('*');
+        $this->db->from('apply_job');
+        $this->db->where('id_job', $id);
+        $this->db->where('id_users', $id_users);
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->row();
+    }
+
+    public function sudah_melamar()
+    {
+        $id_users = $this->session->userdata('id');
+        $this->db->select('*');
+        $this->db->from('apply_job');
+        $this->db->where('id_users', $id_users);
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->result();
     }
 }

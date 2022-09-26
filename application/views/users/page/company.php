@@ -6,7 +6,7 @@
                 <form method="post" action="<?= base_url('Pages/search_company') ?>" class="search-jobs-form">
                     <div class="row mb-5">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-9 mb-4 mb-lg-0">
-                            <input type="text" class="form-control form-control-lg" name="company" placeholder="Nama Perusahaan">
+                            <input type="text" class="form-control form-control-lg" value="<?= $this->session->userdata('company') ?>" name="company" placeholder="Nama Perusahaan">
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                             <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search"><span class="icon-search icon mr-2"></span>Cari Perusahaan</button>

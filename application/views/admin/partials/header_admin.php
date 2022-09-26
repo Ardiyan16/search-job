@@ -13,6 +13,8 @@
     <link href="<?= base_url() ?>assets/back/vendor/chartist/css/chartist.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url() ?>assets/back/vendor/select2/css/select2.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>assets/back/vendor/toastr/css/toastr.min.css">
+    <!-- <link rel="stylesheet" href="<?= base_url() ?>assets/back/js/summernote/summernote-bs4.min.css"> -->
+    <link href="<?= base_url() ?>assets/back/vendor/summernote/summernote.css" rel="stylesheet">
     <link href="<?= base_url() ?>assets/back/css/style.css" rel="stylesheet">
     <script src="<?= base_url() ?>assets/back/sweetalert2-all.js"></script>
     <link href="<?= base_url() ?>assets/back/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -118,9 +120,13 @@
                     </li> -->
                     <li><a href="<?= base_url('Admin') ?>" aria-expanded="false"><i class="fa fa-dashboard"></i><span class="nav-text">Dashboard</span></a></li>
                     <li><a href="<?= base_url('Admin/users') ?>" aria-expanded="false"><i class="fa fa-user"></i><span class="nav-text">Users</span></a></li>
-                    <li><a href="<?= base_url('Admin/company') ?>" aria-expanded="false"><i class="fa fa-briefcase"></i><span class="nav-text">Company</span></a></li>
-                    <li class="nav-label">Menu Company & applicantion</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-bars"></i><span class="nav-text">Menu Tambahan</span></a>
+                    <li><a href="<?= base_url('Admin/company') ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="nav-text">Company</span></a></li>
+                    <li><a href="<?= base_url('Admin/job_vacancy') ?>" aria-expanded="false"><i class="fa fa-briefcase"></i><span class="nav-text">Job Vacancy</span></a></li>
+                    <li class="nav-label">Menu Users</li>
+                    <li><a href="<?= base_url('Admin/message') ?>" aria-expanded="false"><i class="fa fa-envelope"></i><span class="nav-text">Pesan</span></a></li>
+                    <li><a href="<?= base_url('Admin/blog') ?>" aria-expanded="false"><i class="fa fa-blog"></i><span class="nav-text">Blog</span></a></li>
+                    <li class="nav-label">Menu Additional</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-bars"></i><span class="nav-text">Additional Menu</span></a>
                         <ul aria-expanded="false">
                             <li><a href="<?= base_url('Admin/bidang_perusahaan') ?>">Bidang Perusahaan</a></li>
                             <li><a href="<?= base_url('Admin/bidang_spesialis') ?>">Bidang Spesialis</a></li>
@@ -128,6 +134,12 @@
                             <li><a href="<?= base_url('Admin/tingkat_pekerjaan') ?>">Tingkat Pekerjaan</a></li>
                             <li><a href="<?= base_url('Admin/jenis_pekerjaan') ?>">Jenis Pekerjaan</a></li>
                             <li><a href="<?= base_url('Admin/ukuran_perusahaan') ?>">Ukuran Perusahaan</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-bars"></i><span class="nav-text">Additional Blog</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="<?= base_url('Admin/topik') ?>">Topik</a></li>
+                            <li><a href="<?= base_url('Admin/penulis') ?>">Penulis</a></li>
                         </ul>
                     </li>
                 </ul>

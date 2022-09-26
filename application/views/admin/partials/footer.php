@@ -51,5 +51,24 @@
 
 <!-- All init script -->
 <script src="<?= base_url() ?>assets/back/js/plugins-init/toastr-init.js"></script>
+<!-- Summernote -->
+<script src="<?= base_url() ?>assets/back/vendor/summernote/js/summernote.min.js"></script>
+<!-- Summernote init -->
+<script src="<?= base_url() ?>assets/back/js/plugins-init/summernote-init.js"></script>
+<!-- Summernote -->
+<!-- <script src="<?= base_url() ?>assets/back/js/summernote/summernote-bs4.min.js"></script>
+<script>
+    $(function() {
+        // Summernote
+        $('#summernote').summernote();
+        $('#summernote2').summernote()
+
+        // // CodeMirror
+        // CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+        //   mode: "htmlmixed",
+        //   theme: "monokai"
+    }); -->
+<!-- </script> -->
+
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 </body>

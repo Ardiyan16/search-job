@@ -18,14 +18,113 @@ class Pages extends CI_Controller
         $var['company'] = $this->db->order_by('id', 'desc')->limit(8)->get('company')->result();
         $var['total_loker'] = $this->model->total_loker();
         $var['total_company'] = $this->model->total_company();
+        $var['done'] = $this->model->sudah_melamar();
+        foreach ($var['done'] as $d) {
+            $id_job[] = $d->id_job;
+        }
+        if (!empty($id_job)) {
+            $var['datta'] = $id_job;
+        }
         $this->load->view('users/page/home', $var);
     }
 
     public function lowongan()
     {
+        $this->session->unset_userdata('job_title');
+        $this->session->unset_userdata('provinsi');
+        $this->session->unset_userdata('kota');
         $var['title'] = 'Lowongan';
         $var['provinsi'] = $this->db->get('provinces')->result_array();
-        $var['lowongan'] = $this->model->get_lowongan();
+        $this->load->library('pagination');
+        $config['next_link'] = 'Next';
+        $config['prev_link'] = 'Prev';
+        $config['first_link'] = 'Awal';
+        $config['last_link'] = 'Akhir';
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_open'] = '<li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_open'] = '<li>';
+        $config['attributes'] = array('class' => 'page-link');
+        //$total = $this->M_produk->jumlah();
+        $config['base_url'] = base_url('Pages/lowongan');
+        $config['total_rows'] = $this->model->count_all_lowongan();
+        $data['total_rows'] = $config['total_rows'];
+        $config['per_page'] = 10;
+        $this->pagination->initialize($config);
+        $page['start'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $var['lowongan'] = $this->model->get_lowongan($config['per_page'], $page['start']);
+        $var['done'] = $this->model->sudah_melamar();
+
+        foreach ($var['done'] as $d) {
+            $id_job[] = $d->id_job;
+        }
+        if (!empty($id_job)) {
+            $var['datta'] = $id_job;
+        }
+        $this->load->view('users/page/lowongan', $var);
+    }
+
+    public function search_lowongan()
+    {
+        $var['title'] = 'Lowongan';
+        $var['provinsi'] = $this->db->get('provinces')->result_array();
+        $this->load->library('pagination');
+        if (!empty($this->input->post('job_title'))) {
+            $data['job_title'] = $this->input->post('job_title');
+            $data['provinsi'] = $this->input->post('provinces');
+            $data['kota'] = $this->input->post('city');
+            $this->session->set_userdata('job_title', $data['job_title']);
+            $this->session->set_userdata('provinsi', $data['provinsi']);
+            $this->session->set_userdata('kota', $data['kota']);
+        } else {
+            $data['job_title'] = $this->session->unset_userdata('job_title');
+            $data['provinsi'] = $this->session->unset_userdata('provinsi');
+            $data['kota'] = $this->session->unset_userdata('kota');
+        }
+        $config['next_link'] = 'Next';
+        $config['prev_link'] = 'Prev';
+        $config['first_link'] = 'Awal';
+        $config['last_link'] = 'Akhir';
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_open'] = '<li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_open'] = '<li>';
+        $config['attributes'] = array('class' => 'page-link');
+        //$total = $this->M_produk->jumlah();
+        $config['base_url'] = base_url('Pages/lowongan');
+        $config['total_rows'] = $this->model->count_all_search($data['job_title'], $data['provinsi'], $data['kota']);
+        $data['total_rows'] = $config['total_rows'];
+        $config['per_page'] = 10;
+        $this->pagination->initialize($config);
+        $page['start'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $var['lowongan'] = $this->model->search_lowongan($data['job_title'], $data['provinsi'], $data['kota'], $config['per_page'], $page['start']);
+        $var['done'] = $this->model->sudah_melamar();
+        foreach ($var['done'] as $d) {
+            $id_job[] = $d->id_job;
+        }
+        if (!empty($id_job)) {
+            $var['datta'] = $id_job;
+        }
         $this->load->view('users/page/lowongan', $var);
     }
 
@@ -34,6 +133,7 @@ class Pages extends CI_Controller
         $var['title'] = 'Detail Lowongan';
         $var['job'] = $this->model->detail_lowongan($id);
         $var['bookmark'] = $this->model->get_bookmark($id);
+        $var['sudah_melamar'] = $this->model->sudah_melamar2($id);
         $this->load->view('users/page/detail_lowongan', $var);
     }
 
@@ -121,9 +221,36 @@ class Pages extends CI_Controller
             $this->session->set_flashdata('session_habis', true);
             redirect('Auth');
         }
+        $this->load->library('pagination');
+        $config['next_link'] = 'Next';
+        $config['prev_link'] = 'Prev';
+        $config['first_link'] = 'Awal';
+        $config['last_link'] = 'Akhir';
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_open'] = '<li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_open'] = '<li>';
+        $config['attributes'] = array('class' => 'page-link');
+        //$total = $this->M_produk->jumlah();
+        $config['base_url'] = base_url('Pages/lamaran_saya');
+        $config['total_rows'] = $this->model->count_lamaran_saya();
+        $data['total_rows'] = $config['total_rows'];
+        $config['per_page'] = 10;
+        $this->pagination->initialize($config);
+        $page['start'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $var['title'] = 'Lamaran Saya';
         $var['view'] = $this->model->get_profile();
-        $var['lamaran'] = $this->model->get_lamaran();
+        $var['lamaran'] = $this->model->get_lamaran($config['per_page'], $page['start']);
         $this->load->view('users/profile/lamaran_saya', $var);
     }
 
@@ -588,6 +715,7 @@ class Pages extends CI_Controller
 
     public function company()
     {
+        $this->session->unset_userdata('company');
         $var['title'] = 'Perusahaan';
         $this->load->library('pagination');
         $config['next_link'] = 'Next';
@@ -630,7 +758,7 @@ class Pages extends CI_Controller
             $data['company'] = $this->input->post('company');
             $this->session->set_userdata('company', $data['company']);
         } else {
-            $data['company'] = $this->session->userdata('company');
+            $data['company'] = $this->session->unset_userdata('company');
         }
         $config['next_link'] = 'Next';
         $config['prev_link'] = 'Prev';
@@ -668,6 +796,102 @@ class Pages extends CI_Controller
     {
         $var['view'] = $this->model->detail_company($id);
         $var['title'] = $var['view']->nama_perusahaan;
+        $var['jumlah_lowongan'] = $this->model->jumlah_lowongan_perusahaan($id);
         $this->load->view('users/page/detail_company', $var);
+    }
+
+    public function lowongan_perusahaan($id)
+    {
+        $var['view'] = $this->model->detail_company($id);
+        $var['title'] = 'Lowongan ' . $var['view']->nama_perusahaan;
+        $var['jumlah_lowongan'] = $this->model->jumlah_lowongan_perusahaan($id);
+        $var['lowongan'] = $this->model->lowongan_perusahaan($id);
+        $var['done'] = $this->model->sudah_melamar();
+        foreach ($var['done'] as $d) {
+            $id_job[] = $d->id_job;
+        }
+        if (!empty($id_job)) {
+            $var['datta'] = $id_job;
+        }
+        $this->load->view('users/page/lowongan_perusahaan', $var);
+    }
+
+    public function contact()
+    {
+        if (empty($this->session->userdata('id'))) {
+            $this->session->set_flashdata('session_habis', true);
+            redirect('Auth');
+        }
+        $var['title'] = 'Contact';
+        $id = $this->session->userdata('id');
+        $var['view'] = $this->db->get_where('users', ['id' => $id])->row();
+        $this->load->view('users/page/contact', $var);
+    }
+
+    public function save_message()
+    {
+        $this->form_validation->set_rules('subject', 'subject', 'required|trim', ['required' => 'subjek is required (subjek harus di isi)']);
+        $this->form_validation->set_rules('pesan', 'pesan', 'required|trim', ['required' => 'pesan is required (pesan harus di isi)']);
+        if ($this->form_validation->run() == false) {
+            $this->contact();
+        } else {
+            date_default_timezone_set('Asia/Jakarta');
+            $message = [
+                'id_users' => $this->input->post('id_users'),
+                'subject' => $this->input->post('subject'),
+                'pesan' => $this->input->post('pesan'),
+                'waktu' => date('Y-m-d h:i:s'),
+                'status_pesan' => 0
+            ];
+            $this->db->insert('contact', $message);
+            $email = $this->input->post('email');
+            $this->send_email('reply_contact', $email);
+            $this->session->set_flashdata('berhasil_kirim', true);
+            redirect('Pages/contact');
+        }
+    }
+
+    private function send_email($type, $email)
+    {
+        $config = [
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_user' => 'searchjobb22@gmail.com',
+            'smtp_pass' => 'wxwlkjtmqnnnfksu',
+            'smtp_port' => 465,
+            'mailtype' => 'html',
+            'charset' => 'utf-8',
+            'newline' => "\r\n"
+        ];
+        $this->load->library('email', $config);
+        $this->email->from('searchjobb22@gmail.com', 'Search Job');
+
+        $this->email->to($email);
+
+        if ($type == 'reply_contact') {
+            $this->email->subject('Pesan berhasil terkirimkan');
+            $this->email->message(
+                '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <div class="card-body">
+            <p class="card-title" style="margin-top: 43px;">YTH :' .  $email . '</p>
+            <p class="card-text">Terima Kasih telah mengirimkan pesan kepada kami</p>
+            <br>
+            <p class="card-text">Kami akan meninjau lebih lanjut pesan dari anda dan akan membalasnya melalui email</p>
+            <p>Terima Kasih,</p>
+            <p>Search Job Team</p>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        </div>'
+            );
+        }
+
+
+        if ($this->email->send()) {
+            return true;
+        } else {
+            echo $this->email->print_debugger();
+            die;
+        }
     }
 }

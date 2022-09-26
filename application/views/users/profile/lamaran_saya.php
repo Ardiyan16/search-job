@@ -52,7 +52,7 @@
                                             echo "<span class='badge badge-danger' title='tetap semangat masih ada kesempatan lainnya' style='color: white;'>Belum Cocok</span>";
                                         }
                                     } else {
-                                        echo 'Perusahaan telah selesai merekrut';
+                                        echo "<span class='badge badge-secondary' title='perusahaan telah selesai merekrut' style='color: white;'>Perusahaan Telah Selesai Merekrut</span>";
                                     }
                                     ?>
                                 </p>
@@ -64,6 +64,9 @@
                 <?php } ?>
             <?php } ?>
         </div>
+        <nav aria-label="Page navigation example">
+            <?php echo $this->pagination->create_links(); ?>
+        </nav>
     </div>
 </section>
 <script>

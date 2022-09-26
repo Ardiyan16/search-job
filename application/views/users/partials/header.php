@@ -63,12 +63,12 @@
                                 <a href="services.html">Konten</a>
                                 <ul class="dropdown">
                                     <li><a href="services.html">Komunitas</a></li>
-                                    <li><a href="service-single.html">Tutorial</a></li>
+                                    <li><a href="service-single.html">Tips & Trick</a></li>
                                     <li><a href="gallery.html">Gallery</a></li>
                                 </ul>
                             </li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="<?= base_url('Pages/blog') ?>">Blog</a></li>
+                            <li><a href="<?= base_url('Pages/contact') ?>">Contact</a></li>
                             <?php if ($this->session->userdata('nama_depan')) { ?>
                                 <li class="has-children">
                                     <a href="#"><?= $this->session->userdata('nama_depan') ?></a>

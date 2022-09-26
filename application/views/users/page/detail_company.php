@@ -36,14 +36,35 @@
                     <div class="mb-4">
                         <h3 class="mb-4 h4 border-bottom"><?= $view->nama_perusahaan ?></h3>
                         <p>Bidang &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $view->bidang_perusahaan ?></p>
-                        <p>Alamat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $view->alamat ?></p>
+                        <!-- <p>Alamat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $view->alamat ?></p> -->
                         <p>Situs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;: <a href="<?= $view->situs ?>"><?= $view->situs ?></a></p>
+                            &nbsp;: <a href="<?= $view->situs ?>"><?= $view->situs ?></a></p>
                         <p>Ukuran &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $view->ukuran ?><br>
                             Perusahaan</p>
+                        <p>Lowongan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?= $jumlah_lowongan ?> Lowongan</p>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-4">
+                <a href="<?= base_url('Pages/lowongan_perusahaan/' . $view->id) ?>" class="btn btn-block btn-primary btn-md"><i class="fa fa-briefcase"></i> Lowongan Pada <?= $view->nama_perusahaan ?></a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="fa fa-building mr-3"></span>Deskripsi Perusahaan</h3>
+        </div>
+        <div class="row">
+            <?= $view->deskripsi ?>
+        </div>
+        <div class="row">
+            <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="fa fa-building mr-3"></span>Alamat Perusahaan</h3>
+        </div>
+        <div class="row">
+            <?= $view->alamat ?>
         </div>
     </div>
 </section>

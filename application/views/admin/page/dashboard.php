@@ -20,11 +20,11 @@
                 <div class="card">
                     <div class="stat-widget-one card-body">
                         <div class="stat-icon d-inline-block">
-                            <i class="ti-money text-success border-success"></i>
+                            <i class="fa fa-users text-success border-success"></i>
                         </div>
                         <div class="stat-content d-inline-block">
-                            <div class="stat-text">Employe</div>
-                            <div class="stat-digit">1,012</div>
+                            <div class="stat-text">Users</div>
+                            <div class="stat-digit"><?= $count_users ?></div>
                         </div>
                     </div>
                 </div>
@@ -33,11 +33,11 @@
                 <div class="card">
                     <div class="stat-widget-one card-body">
                         <div class="stat-icon d-inline-block">
-                            <i class="ti-user text-primary border-primary"></i>
+                            <i class="fa fa-building-o text-primary border-primary"></i>
                         </div>
                         <div class="stat-content d-inline-block">
-                            <div class="stat-text">Customer</div>
-                            <div class="stat-digit">961</div>
+                            <div class="stat-text">Company</div>
+                            <div class="stat-digit"><?= $count_company ?></div>
                         </div>
                     </div>
                 </div>
@@ -46,11 +46,11 @@
                 <div class="card">
                     <div class="stat-widget-one card-body">
                         <div class="stat-icon d-inline-block">
-                            <i class="ti-layout-grid2 text-pink border-pink"></i>
+                            <i class="fa fa-briefcase text-warning border-warning"></i>
                         </div>
                         <div class="stat-content d-inline-block">
-                            <div class="stat-text">Projects</div>
-                            <div class="stat-digit">770</div>
+                            <div class="stat-text">Job Posted</div>
+                            <div class="stat-digit"><?= $count_postjob ?></div>
                         </div>
                     </div>
                 </div>
@@ -59,11 +59,11 @@
                 <div class="card">
                     <div class="stat-widget-one card-body">
                         <div class="stat-icon d-inline-block">
-                            <i class="ti-link text-danger border-danger"></i>
+                            <i class="fa fa-file text-danger border-danger"></i>
                         </div>
                         <div class="stat-content d-inline-block">
-                            <div class="stat-text">Referral</div>
-                            <div class="stat-digit">2,781</div>
+                            <div class="stat-text">Apply Job</div>
+                            <div class="stat-digit"><?= $count_apply ?></div>
                         </div>
                     </div>
                 </div>

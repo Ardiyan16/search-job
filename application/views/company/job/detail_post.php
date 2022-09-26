@@ -54,7 +54,7 @@
                 <div class="row mb-5">
                     <div class="col-6">
                         <a href="<?= base_url('Company/edit_post_job/' . $job->id) ?>" class="btn btn-block btn-primary btn-md"><i class="fa fa-edit"></i> Edit Postingan</a>
-                        <a href="<?= base_url('Company/done_rectruitment/' . $job->id) ?>" class="btn btn-block btn-danger btn-md"><i class="fa fa-check"></i> Selesai Rekrutmen</a>
+                        <a href="<?= base_url('Company/done_rectruitment/' . $job->id) ?>" class="btn btn-block btn-danger btn-md selesai-merekrut"><i class="fa fa-check"></i> Selesai Rekrutmen</a>
                     </div>
                 </div>
 
@@ -100,6 +100,7 @@
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>Domisili</th>
+                                        <th>Waktu Apply</th>
                                         <th>Status</th>
                                         <th>Option</th>
                                     </tr>
@@ -113,6 +114,7 @@
                                             <td><?= $view->nama_depan ?> <?= $view->nama_belakang ?></td>
                                             <td><?= $view->email ?></td>
                                             <td><?= $view->kota ?>, <?= $view->provinsi ?></td>
+                                            <td><?= date('d F Y', strtotime($view->date_apply)) ?> (<?= $view->time_apply ?>)</td>
                                             <td> <?php if ($view->status_lamaran == 0) {
                                                         echo "<span class='badge badge-info' title='review' style='color: white;'>Dalam Review</span>";
                                                     } elseif ($view->status_lamaran == 1) {
@@ -123,6 +125,7 @@
                                                     ?>
                                             </td>
                                             <td>
+                                                <a href="#keterangan_pelamar<?= $view->id ?>" data-toggle="modal" title="Keterangan Pelamar" class="badge bg-info" style="color: white;"><i class="fa fa-file-text"></i></a>
                                                 <a href="<?= base_url('Company/detail_pelamar/' . $view->id_users) ?>" title="Detail Pelamar" class="badge bg-primary" style="color: white;"><i class="fa fa-list"></i></a>
                                                 <a href="<?= base_url('assets/document/resume/' . $view->file) ?>" title="Download Resume" class="badge bg-info" style="color: white;"><i class="fa fa-download"></i></a>
                                                 <?php if ($view->status_lamaran < 1) { ?>
@@ -141,6 +144,31 @@
         </div>
     </div>
 </section>
+<?php foreach ($pelamar as $detail) { ?>
+    <div class="modal fade" id="keterangan_pelamar<?= $detail->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Keterangan <?= $detail->nama_depan ?> <?= $detail->nama_belakang ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php if (empty($detail->keterangan)) {
+                        echo 'Pelamar tidak mencantumkan keterangan';
+                    } else {
+                        echo $detail->keterangan;
+                    }
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <script>
     <?php if ($this->session->flashdata('success_post_job')) : ?>
         Swal.fire({
@@ -168,6 +196,7 @@
             showConfirmButton: true,
             // timer: 1500
         })
+
     <?php endif ?>
 
     $('.terima-lamaran').on('click', function(e) {
@@ -202,6 +231,26 @@
             confirmButtonColor: '#d33',
             cancelButtonColor: '#00a6fb',
             confirmButtonText: 'Tolak Lamaran!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.location.href = link;
+            }
+        })
+
+    })
+
+    $('.selesai-merekrut').on('click', function(e) {
+        e.preventDefault();
+        const link = $(this).attr('href');
+
+        Swal.fire({
+            title: 'Apakah anda yakin ?',
+            text: "Rekrutmen perusahaan telah selesai!",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#00a6fb',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Selesai Merekrut!'
         }).then((result) => {
             if (result.isConfirmed) {
                 document.location.href = link;

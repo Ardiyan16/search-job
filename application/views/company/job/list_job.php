@@ -27,7 +27,11 @@
                 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                     <a href="<?= base_url('Company/detail_lowongan/' . $view->id) ?>"></a>
                     <div class="job-listing-logo">
-                        <img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" alt="Image" class="img-fluid">
+                        <?php if (empty($view->logo)) { ?>
+                            <img src="<?= base_url('assets/image/company.png') ?>" width="100" alt="Image" class="img-fluid">
+                        <?php } else { ?>
+                            <img src="<?= base_url('assets/image/company_logo/' . $view->logo) ?>" width="100" alt="Image" class="img-fluid">
+                        <?php } ?>
                     </div>
 
                     <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
@@ -51,23 +55,9 @@
                 </li>
             <?php } ?>
         </ul>
-        <!-- <div class="row pagination-wrap">
-            <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-                <span></span>
-            </div>
-            <div class="col-md-6 text-center text-md-right">
-                <div class="custom-pagination ml-auto">
-                    <a href="#" class="prev">Prev</a>
-                    <div class="d-inline-block">
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                    </div>
-                    <a href="#" class="next">Next</a>
-                </div>
-            </div>
-        </div> -->
+        <nav aria-label="Page navigation example">
+            <?php echo $this->pagination->create_links(); ?>
+        </nav>
 
     </div>
 </section>
@@ -77,6 +67,16 @@
             icon: 'success',
             title: 'Berhasil!',
             text: 'Lowongan berhasil diposting',
+            showConfirmButton: true,
+            // timer: 1500
+        })
+
+
+    <?php elseif ($this->session->flashdata('lamaran_ditutup')) : ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Postingan lamaran berhasil ditutup',
             showConfirmButton: true,
             // timer: 1500
         })

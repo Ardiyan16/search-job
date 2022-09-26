@@ -13,6 +13,7 @@ class M_admin extends CI_Model
     private $resume = 'resume';
     private $pendidikan = 'pendidikan';
     private $pengalaman = 'pengalaman';
+    private $blog = 'blog';
 
     public function get_bidang_perusahaan()
     {
@@ -22,6 +23,37 @@ class M_admin extends CI_Model
     public function get_users()
     {
         return $this->db->get_where('users', ['status', 1])->result();
+    }
+
+    public function count_users()
+    {
+        $this->db->select('COUNT(id) as jml');
+        $this->db->from('users');
+        $this->db->where('status', 1);
+        return $this->db->get()->row()->jml;
+    }
+
+    public function count_company()
+    {
+        $this->db->select('COUNT(id) as jml');
+        $this->db->from('company');
+        $this->db->where('status', 1);
+        return $this->db->get()->row()->jml;
+    }
+
+    public function count_postjob()
+    {
+        $this->db->select('COUNT(id) as jml');
+        $this->db->from('post_job');
+        $this->db->where('status', 0);
+        return $this->db->get()->row()->jml;
+    }
+
+    public function count_apply()
+    {
+        $this->db->select('COUNT(id) as jml');
+        $this->db->from('apply_job');
+        return $this->db->get()->row()->jml;
     }
 
     public function get_bidang_pekerjaan()
@@ -126,5 +158,124 @@ class M_admin extends CI_Model
         $this->db->join('regencies reg', 'it.kota3 = reg.id');
         $this->db->where('id_users', $id);
         return $this->db->get()->row();
+    }
+
+    public function get_company()
+    {
+        $this->db->select('com.*, up.ukuran, bp.bidang_perusahaan');
+        $this->db->from('company com');
+        $this->db->join('ukuran_perusahaan up', 'com.jumlah_karyawan = up.id');
+        $this->db->join('bidang_perusahaan bp', 'com.bid_company = bp.id');
+        $this->db->where('status', 1);
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->result();
+    }
+
+    public function detail_company($id)
+    {
+        $this->db->select('com.*, up.ukuran, bp.bidang_perusahaan');
+        $this->db->from('company com');
+        $this->db->join('ukuran_perusahaan up', 'com.jumlah_karyawan = up.id');
+        $this->db->join('bidang_perusahaan bp', 'com.bid_company = bp.id');
+        $this->db->where('status', 1);
+        $this->db->where('com.id', $id);
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->row();
+    }
+
+    public function get_job_vacancy()
+    {
+        $this->db->select('pj.*, prov.name provinsi, reg.name kota, jp.jenis_kerja, bs.spesialis, com.nama_perusahaan');
+        $this->db->from('post_job pj');
+        $this->db->join('provinces prov', 'pj.provinsi = prov.id');
+        $this->db->join('regencies reg', 'pj.kota = reg.id');
+        $this->db->join('jenis_pekerjaan jp', 'pj.jenis_pekerjaan = jp.id');
+        $this->db->join('bidang_spesialis bs', 'pj.bid_spesialis = bs.id');
+        $this->db->join('company com', 'pj.id_company = com.id');
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->result();
+    }
+
+    public function detail_job_vacancy($id)
+    {
+        $this->db->select('pj.*, prov.name provinsi, reg.name kota, jp.jenis_kerja, bs.spesialis, bp.bidang_pekerjaan, tp.tingkat_kerja, com.nama_perusahaan');
+        $this->db->from('post_job pj');
+        $this->db->join('provinces prov', 'pj.provinsi = prov.id');
+        $this->db->join('regencies reg', 'pj.kota = reg.id');
+        $this->db->join('jenis_pekerjaan jp', 'pj.jenis_pekerjaan = jp.id');
+        $this->db->join('bidang_spesialis bs', 'pj.bid_spesialis = bs.id');
+        $this->db->join('bidang_pekerjaan bp',  'pj.bid_kerja = bp.id');
+        $this->db->join('tingkat_pekerjaan tp', 'pj.tingkat_pekerjaan = tp.id');
+        $this->db->join('company com', 'pj.id_company = com.id');
+        $this->db->where('pj.id', $id);
+        return $this->db->get()->row();
+    }
+
+    public function total_pelamar($id)
+    {
+        $this->db->select('COUNT(id) as jml');
+        $this->db->from('apply_job');
+        $this->db->where('id_job', $id);
+        return $this->db->get()->row()->jml;
+    }
+
+    public function get_pelamar($id)
+    {
+        $this->db->select('*');
+        $this->db->from('apply_job aj');
+        $this->db->join('users', 'aj.id_users = users.id');
+        $this->db->where('id_job', $id);
+        $this->db->order_by('aj.id', 'desc');
+        return $this->db->get()->result();
+    }
+
+    public function get_pesan()
+    {
+        $this->db->select('con.*, usr.nama_depan, usr.nama_belakang, usr.email');
+        $this->db->from('contact con');
+        $this->db->join('users usr', 'con.id_users = usr.id');
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->result();
+    }
+
+    public function get_blog()
+    {
+        $this->db->select('blog.*, emp.nama, emp.role_id, tp.topik topikk');
+        $this->db->from('blog');
+        $this->db->join('employee emp', 'blog.penulis = emp.id');
+        $this->db->join('topik tp', 'blog.topik = tp.id');
+        $this->db->order_by('blog.id', 'desc');
+        return $this->db->get()->result();
+    }
+
+    public function save_blog()
+    {
+        $post = $this->input->post();
+        date_default_timezone_set('Asia/Jakarta');
+        $this->judul = $post['judul'];
+        $this->topik = $post['topik'];
+        $this->tanggal = date('Y-m-d h:i:s');
+        $this->penulis = $post['penulis'];
+        $this->isi = $post['isi'];
+        $this->images = $this->upload_imageBlog();
+        $this->db->insert($this->blog, $this);
+    }
+
+    private function upload_imageBlog()
+    {
+        $config['upload_path']          = './assets/image/blog_image';
+        $config['allowed_types']        = 'gif|jpg|png|jpeg';
+        $nama_lengkap = $_FILES['images']['name'];
+        $config['file_name']            = $nama_lengkap;
+        $config['overwrite']            = true;
+        $config['max_size']             = 3024;
+
+        $this->upload->initialize($config);
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload('images')) {
+            return $this->upload->data("file_name");
+        }
+        print_r($this->upload->display_errors());
     }
 }

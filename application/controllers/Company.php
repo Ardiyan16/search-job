@@ -65,7 +65,34 @@ class Company extends CI_Controller
     public function list_job()
     {
         $var['title'] = 'Company | List Job';
-        $var['lowongan'] = $this->model->get_lowongan();
+        $this->load->library('pagination');
+        $config['next_link'] = 'Next';
+        $config['prev_link'] = 'Prev';
+        $config['first_link'] = 'Awal';
+        $config['last_link'] = 'Akhir';
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_open'] = '<li>';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_open'] = '<li>';
+        $config['attributes'] = array('class' => 'page-link');
+        //$total = $this->M_produk->jumlah();
+        $config['base_url'] = base_url('Company/list_job');
+        $config['total_rows'] = $this->model->jml_lowongan();
+        $data['total_rows'] = $config['total_rows'];
+        $config['per_page'] = 3;
+        $this->pagination->initialize($config);
+        $page['start'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $var['lowongan'] = $this->model->get_lowongan($config['per_page'], $page['start']);
         $var['jml_loker'] = $this->model->jml_lowongan();
         $this->load->view('company/job/list_job', $var);
     }
@@ -310,9 +337,22 @@ class Company extends CI_Controller
         }
     }
 
+    public function done_rectruitment($id)
+    {
+        $this->db->set('status', 1);
+        $this->db->where('id', $id);
+        $this->db->update('post_job');
+        $this->session->set_flashdata('lamaran_ditutup', true);
+        redirect('Company/list_job');
+    }
+
     public function about()
     {
         $var['title'] = 'Company | About';
+        $var['count_users'] = $this->model->total_users();
+        $var['count_company'] = $this->admin->count_company();
+        $var['count_postjob'] = $this->admin->count_postjob();
+        $var['count_apply'] = $this->admin->count_apply();
         $this->load->view('company/about', $var);
     }
 }

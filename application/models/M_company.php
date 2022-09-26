@@ -25,7 +25,7 @@ class M_company extends CI_Model
         return $this->db->get_where($this->company, ['id' => $id])->row();
     }
 
-    public function get_lowongan()
+    public function get_lowongan($perpage, $start)
     {
         $id = $this->session->userdata('id');
         $this->db->select('pj.*, com.nama_perusahaan,com.logo, jepek.jenis_kerja');
@@ -34,8 +34,9 @@ class M_company extends CI_Model
         $this->db->join('jenis_pekerjaan jepek', 'pj.jenis_pekerjaan = jepek.id');
         $this->db->where('com.id', $id);
         $this->db->order_by('pj.id', 'desc');
-        return $this->db->get()->result();
+        return $this->db->get('', $perpage, $start)->result();
     }
+    
 
     public function jml_lowongan()
     {
@@ -118,6 +119,7 @@ class M_company extends CI_Model
         $this->jenis_pekerjaan = $post['jenis_pekerjaan'];
         $this->waktu_proses = $post['waktu_proses'];
         $this->tunjangan = $post['tunjangan'];
+        date_default_timezone_set('Asia/Jakarta');
         $this->tgl_posting = date("Y-m-d");
         $this->id_company = $post['id_company'];
         $this->db->insert($this->loker, $this);

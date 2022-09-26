@@ -24,28 +24,28 @@
 
             <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                 <div class="d-flex align-items-center justify-content-center mb-2">
-                    <strong class="number" data-number="1930">0</strong>
+                    <strong class="number" data-number="<?= $count_users ?>">0</strong>
                 </div>
                 <span class="caption">Candidates</span>
             </div>
 
             <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                 <div class="d-flex align-items-center justify-content-center mb-2">
-                    <strong class="number" data-number="54">0</strong>
+                    <strong class="number" data-number="<?= $count_postjob ?>">0</strong>
                 </div>
                 <span class="caption">Jobs Posted</span>
             </div>
 
             <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                 <div class="d-flex align-items-center justify-content-center mb-2">
-                    <strong class="number" data-number="120">0</strong>
+                    <strong class="number" data-number="<?= $count_apply ?>">0</strong>
                 </div>
-                <span class="caption">Jobs Filled</span>
+                <span class="caption">Apply Jobs</span>
             </div>
 
             <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                 <div class="d-flex align-items-center justify-content-center mb-2">
-                    <strong class="number" data-number="550">0</strong>
+                    <strong class="number" data-number="<?= $count_company ?>">0</strong>
                 </div>
                 <span class="caption">Companies</span>
             </div>
@@ -60,80 +60,35 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0">
-                <a data-fancybox data-ratio="2" href="https://vimeo.com/317571768" class="block__96788">
-                    <span class="play-icon"><span class="icon-play"></span></span>
-                    <img src="images/sq_img_6.jpg" alt="Image" class="img-fluid img-shadow">
+                <a data-fancybox data-ratio="2" class="block__96788">
+                    <img src="<?= base_url('assets/image/logo2.png') ?>" alt="Image" class="img-fluid img-shadow">
                 </a>
             </div>
             <div class="col-lg-5 ml-auto">
-                <h2 class="section-title mb-3">JobBoard For Freelancers, Web Developers</h2>
-                <p class="lead">Eveniet voluptatibus voluptates suscipit minima, cum voluptatum ut dolor, sed facere corporis qui, ea quisquam quis odit minus nulla vitae. Sit, voluptatem.</p>
-                <p>Ipsum harum assumenda in eum vel eveniet numquam, cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit!</p>
+                <h2 class="section-title mb-3">Apa itu Search Job ?</h2>
+                <p class="lead">Search Job adalah platform yang akan membantu anda untuk mendapatkan kandidat yang tepat untuk mengisi posisi pada perusahaan anda.</p>
+                <p>Bergabung dengan kami dan coba temukan kandidat terbaik pada bidangnya!</p>
             </div>
         </div>
     </div>
 </section>
 
-<section class="site-section pt-0">
+<section class="site-section pt-0 mt-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0 order-md-2">
-                <a data-fancybox data-ratio="2" href="https://vimeo.com/317571768" class="block__96788">
-                    <span class="play-icon"><span class="icon-play"></span></span>
-                    <img src="images/sq_img_8.jpg" alt="Image" class="img-fluid img-shadow">
+                <a data-fancybox data-ratio="2" class="block__96788">
+                    <img src="<?= base_url('assets/image/work2.jpg') ?>" alt="Image" class="img-fluid img-shadow">
                 </a>
             </div>
             <div class="col-lg-5 mr-auto order-md-1  mb-5 mb-lg-0">
-                <h2 class="section-title mb-3">JobBoard For Workers</h2>
-                <p class="lead">Eveniet voluptatibus voluptates suscipit minima, cum voluptatum ut dolor, sed facere corporis qui, ea quisquam quis odit minus nulla vitae. Sit, voluptatem.</p>
-                <p>Ipsum harum assumenda in eum vel eveniet numquam, cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit!</p>
+                <h2 class="section-title mb-3">Search Job For Workers</h2>
+                <p class="lead">Terdapat puluhan ribu kandidat terbaik pada platform kami.</p>
+                <p>Kami menyediakan kandidat yang memumpuni dan terbuka untuk perusahaan anda!</p>
             </div>
         </div>
     </div>
 </section>
 
 
-<section class="site-section">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-12 text-center" data-aos="fade">
-                <h2 class="section-title mb-3">Our Team</h2>
-            </div>
-        </div>
-
-        <div class="row align-items-center block__69944">
-
-            <div class="col-md-6">
-                <img src="images/person_6.jpg" alt="Image" class="img-fluid mb-4 rounded">
-            </div>
-
-            <div class="col-md-6">
-                <h3>Elisabeth Smith</h3>
-                <p class="text-muted">Creative Director</p>
-                <p>Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel ad explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
-                <div class="social mt-4">
-                    <a href="#"><span class="icon-facebook"></span></a>
-                    <a href="#"><span class="icon-twitter"></span></a>
-                    <a href="#"><span class="icon-instagram"></span></a>
-                    <a href="#"><span class="icon-linkedin"></span></a>
-                </div>
-            </div>
-
-            <div class="col-md-6 order-md-2 ml-md-auto">
-                <img src="images/person_5.jpg" alt="Image" class="img-fluid mb-4 rounded">
-            </div>
-
-            <div class="col-md-6">
-                <h3>Chintan Patel</h3>
-                <p class="text-muted">Creative Director</p>
-                <p>Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero dolores repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum repudiandae voluptatibus ut? Ex vel ad explicabo iure ipsa possimus consectetur neque rem molestiae eligendi velit?.</p>
-                <div class="social mt-4">
-                    <a href="#"><span class="icon-facebook"></span></a>
-                    <a href="#"><span class="icon-twitter"></span></a>
-                    <a href="#"><span class="icon-instagram"></span></a>
-                    <a href="#"><span class="icon-linkedin"></span></a>
-                </div>
-            </div>
-        </div>
-</section>
 <?php $this->load->view('company/partials/footer') ?>

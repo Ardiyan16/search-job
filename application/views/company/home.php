@@ -48,40 +48,39 @@
     </div>
 </section>
 
-
-<section class="site-section py-4">
+<section class="site-section">
     <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center" data-aos="fade">
+                <h2 class="section-title mb-3">Kenapa Harus Search Job</h2>
+            </div>
+        </div>
 
-        <div class="row align-items-center">
-            <div class="col-12 text-center mt-4 mb-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-7">
-                        <h2 class="section-title mb-2">Kenapa Harus Search Job</h2>
-                        <!-- <p class="lead">Karena </p> -->
-                    </div>
-                </div>
+        <div class="row align-items-center block__69944">
+
+            <div class="col-md-6">
+                <img src="<?= base_url('assets/image/work.jpg') ?>" alt="Image" class="img-fluid mb-4 rounded">
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5">
-                <img src="<?= base_url('assets/image/work.jpg') ?>" height="250" width="350">
-            </div>
-            <div class="col-lg-7">
-                <h4 style="font-weight: bold;">Mudah untuk menemukan kandidat</h4>
+
+            <div class="col-md-6">
+                <h3>Mudah untuk menemukan kandidat</h3>
                 <p>Dengan search job mempermudah perusahaan anda menemukan kandidat yang tepat untuk posisi yang dibutuhkan.</p>
+                
             </div>
-        </div>
-        <div class="row" style="margin-top: 150px;">
-            <div class="col-lg-7">
-                <h4 style="font-weight: bold;">Membangun Tim</h4>
+
+            <div class="col-md-6 order-md-2 ml-md-auto">
+                <img src="<?= base_url('assets/image/team_work.jpg') ?>" alt="Image" class="img-fluid mb-4 rounded">
+            </div>
+
+            <div class="col-md-6">
+                <h3>Membangun Tim</h3>
                 <p>Dengan search job dapat membangun tim sesuai dengan keinginan anda atau perusahaan anda.</p>
-            </div>
-            <div class="col-lg-5">
-                <img src="<?= base_url('assets/image/team_work.jpg') ?>" height="250" width="350">
+            
             </div>
         </div>
-    </div>
 </section>
+
+
 
 <section class="py-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
     <div class="container">
